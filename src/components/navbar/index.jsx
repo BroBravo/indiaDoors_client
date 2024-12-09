@@ -1,6 +1,6 @@
 import React from "react";
 import  "./index.scss"
-import { Link } from 'react-router-dom'
+//import { Link } from 'react-router-dom'
 const menuItems=[
     {
         label:'Home',
@@ -20,21 +20,21 @@ const menuItems=[
     }
 ]
 
-function navbar(){
+function Navbar(){
     return(
         <nav className="navbar">
             {
                 menuItems.map((item,key)=>(
-                   <ul key={key} className="navbar_items">
-                        <Link to={item.to}>
+                   <div key={key} className="navbar_items">
+                        
                            {item.label}
-                        </Link>
+                        
 
-                   </ul> 
+                   </div> 
                 ))
             }
         </nav>
     )
 }
 
-export default navbar
+export default Navbar

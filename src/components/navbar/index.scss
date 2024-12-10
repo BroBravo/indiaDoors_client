@@ -1,10 +1,18 @@
 .navbar{
     display:flex;
     background-color: rgba(84, 43, 5, 0.919);
+    text-decoration: none;
+    
 
 }
 .navbar_items{
-    margin: 2vh;
+    padding: 2vh;
     font-size: 3vh;
     cursor: pointer;
+   
+}
+.navbar_items_link{
+    text-decoration: none;
+     color: white;
+    
 }

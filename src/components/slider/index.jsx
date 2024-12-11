@@ -7,10 +7,10 @@ function Slider(props) {
   
   // Array of images
   const images = [
-    "/schoolpic1.jpeg",
-    "/schoolpic2.jpeg",
-    "/schoolpic3.jpeg",
-    "/schoolpic4.jpeg"
+    "/plywood.jpg",
+    "/plywood2.avif",
+    "/door1.webp",
+    "/door2.webp"
   ];
 
   // Function to handle right arrow click

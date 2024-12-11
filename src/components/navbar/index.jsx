@@ -9,14 +9,14 @@ const menuItems=[
     {
         label:'ABOUT US',
         to:'/about'
-    },
-    {
-        label:'LOGIN',
-        to:'/login'
-    },
+    },  
     {
         label:'CONTACT US',
         to:'/contact'
+    },
+    {
+        label:'SERVICES',
+        to:'/#service_section'
     }
 ]
 

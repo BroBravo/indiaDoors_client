@@ -11,7 +11,10 @@
     padding: 2vh;
     font-size: 3vh;
     cursor: pointer;
-   
+    border-bottom: 2px solid transparent;
+}
+.navbar_items:hover{
+    border-bottom: 2px solid white;
 }
 .navbar_items_link{
     text-decoration: none;

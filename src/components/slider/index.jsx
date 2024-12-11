@@ -28,14 +28,14 @@ function Slider(props) {
   };
 
   return (
-    <div className="sliderContainer">
+    <div className="slider_container">
       <div className="arrow left" onClick={handlePrev}>
         <img className="fullImage" src="arrowIcon.png" alt="Previous"/>
       </div>
 
       <div className="slider" style={{ transform: `translateX(-${currentIndex * 100}%)` }}>
         {images.map((image, index) => (
-          <div className="imageContainer" key={index}>
+          <div className="slider_image_container" key={index}>
             <img src={image} alt={`Slide ${index + 1}`} />
           </div>
         ))}

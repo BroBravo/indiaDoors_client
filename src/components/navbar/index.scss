@@ -5,7 +5,7 @@
     top: 0;
     position: sticky;
     width:100%;
-    
+    z-index: 3;
 
 }
 .navbar_items{
@@ -35,8 +35,9 @@
 }
 .login_info_username{
     
+    display: flex;
     flex:1;
-    display:flex;
+    white-space:nowrap;
     align-items: center;
     font-size: 3vh;
     margin-right: 1vw;

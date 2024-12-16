@@ -32,7 +32,7 @@ function Navbar(){
                 ))
             }
             <div className="login_info">
-                <div className="login_info_username">Login/Signup</div>
+                <div className="login_info_username"><Link to='/login' className="navbar_items_link">Login/Sign up</Link></div>
                 <div className="login_image_container"><img src="/defaultuser.webp" className="login_info_image" alt="pic" /></div>
                 
             </div>

@@ -85,27 +85,51 @@
 // export default App;
 
 
-import React from 'react';
-import { QRCodeSVG } from 'qrcode.react';
+// import React from 'react';
+// import { QRCodeSVG } from 'qrcode.react';
 
-function UpiQRCode({ amount, upiId, payeeName }) {
-  const upiUrl = `upi://pay?pa=${upiId}&pn=${payeeName}&am=${amount}&cu=INR`;
+// function UpiQRCode({ amount, upiId, payeeName }) {
+//   const upiUrl = `upi://pay?pa=${upiId}&pn=${payeeName}&am=${amount}&cu=INR`;
+
+//   return (
+//     <div>
+//       <h3>Scan to Pay</h3>
+//       <QRCodeSVG value={upiUrl} size={200} ></QRCodeSVG>
+//       <p>Payee Name: {payeeName}</p>
+//       <p>Amount: ₹{amount}</p>
+//     </div>
+//   );
+// }
+
+// export default function App() {
+//   return (
+//     <div>
+//       <h1>Confirm Order</h1>
+//       <UpiQRCode amount="500" upiId="mohdquresh@ybl" payeeName="Uzair" />
+//     </div>
+//   );
+// }
+
+import React, { useState } from 'react';
+import styles from "./index.module.scss"; // Import SCSS module
+
+const Door = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleDoor = () => {
+    setIsOpen(!isOpen);
+  };
 
   return (
-    <div>
-      <h3>Scan to Pay</h3>
-      <QRCodeSVG value={upiUrl} size={200} ></QRCodeSVG>
-      <p>Payee Name: {payeeName}</p>
-      <p>Amount: ₹{amount}</p>
+    <div className={styles.doorContainer}>
+      <div className={`${styles.door} ${isOpen ? styles.open : ''}`}></div>
+      <button className={styles.button} onClick={toggleDoor}>
+        Open/Close Door
+      </button>
     </div>
   );
-}
+};
 
-export default function App() {
-  return (
-    <div>
-      <h1>Confirm Order</h1>
-      <UpiQRCode amount="500" upiId="mohdquresh@ybl" payeeName="Uzair" />
-    </div>
-  );
-}
+export default Door;
+
+

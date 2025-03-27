@@ -1,0 +1,93 @@
+.formContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw; 
+    perspective: 2500px; 
+    font-family: 'Times New Roman', Times, serif;
+    
+}
+
+.inputStyle {
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom:10px;
+    border-bottom: 2px solid black !important;
+    border:none;
+    outline:none;
+    cursor: text;
+    background-color: rgb(237, 233, 230);
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 70vh;
+    width: 25vw; 
+    border: 1px solid black;
+    position: relative;
+    perspective: 2500px;
+    box-sizing: border-box;
+    padding: 10px;
+    background-color: rgb(126, 97, 72);
+     
+}
+
+.doorContainer {
+  perspective: 1000px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.door {
+  width: 100%;
+  height: 100%;
+  background-color: #5e2b06;
+  border: 2px solid #654321;
+  transform-origin: left;
+  transform-style: preserve-3d;
+  transition: transform 1s;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+  position: absolute;
+  z-index: 3;
+}
+
+.open {
+  transform: rotateY(-180deg);
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #792a2a;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+
+.doorImage{
+  width: 100%;
+  height:100%;
+}
+.doorToggleContainer{
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position:relative;
+  
+  
+}
+

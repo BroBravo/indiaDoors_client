@@ -1,0 +1,85 @@
+.navbar {
+    display: flex;
+    background-color: white;
+    text-decoration: none;
+    top: 0;
+    position: sticky;
+    width: 100%;
+    z-index: 3;
+    border-bottom: 3px solid rgba(84, 43, 5, 0.919);
+}
+
+.navbarItems {
+    padding: 2vh;
+    font-size: 2vw;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    font-weight: 500;
+    font-family:'Times New Roman', Times, serif;
+}
+
+.navbarItems:hover {
+    border-bottom: 2px solid white;
+}
+
+.navbarItemsLink {
+    text-decoration: none;
+    color: rgba(93, 53, 15, 0.919);
+}
+
+.loginInfo {
+    display: flex;
+    flex: 1;
+    color: black;
+    right: 0px;
+    position: absolute;
+    height: 100%;
+    margin-right: 2vw;
+    cursor: pointer;
+}
+
+.loginInfoUsername {
+    display: flex;
+    flex: 1;
+    color: black;
+    white-space: nowrap;
+    align-items: center;
+    font-size: 2vw;
+    margin-right: 1vw;
+}
+
+.loginImageContainer {
+    flex: 1;
+    object-fit: contain;
+}
+
+.loginInfoImage {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    z-index: 3;
+}
+.dropDownContainer{
+    position:absolute;
+    background-color: white;
+    top:100%;
+    display: flex;
+    flex-direction: column;
+    border-radius: 5px;
+    border: 2px solid;
+}
+.dropDownContainerItem{
+    display:flex;
+    height:4vh;
+    justify-content: center;
+}
+.logoutButton{
+    background-color: rgb(208, 62, 62);
+    height:auto;
+    width:auto;
+}
+.profileLink{
+    color:black;
+    font-size: 3vh;
+    text-decoration: none;
+}

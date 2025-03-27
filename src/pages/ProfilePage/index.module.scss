@@ -1,0 +1,87 @@
+/* ProfilePage.module.scss */
+.profileContainer {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f3f4f6;
+  color: black;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 25%;
+  background-color: white;
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.profileInfo {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.profileImage {
+  border-radius: 50%;
+  display: block;
+  margin: 0 auto;
+}
+
+.profileName {
+  margin-top: 10px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.profileEmail {
+  font-size: 14px;
+  color: gray;
+}
+
+.navLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.navButton {
+  display: flex;
+  color: black;
+  align-items: center;
+  width: 100%;
+  padding: 10px;
+  border: none;
+  background: none;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+
+  &:hover {
+    background-color: #e5e7eb;
+  }
+
+  svg {
+    margin-right: 10px;
+  }
+}
+
+.logout {
+  color: red;
+}
+
+/* Main Content */
+.mainContent {
+  flex: 1;
+  padding: 20px;
+}
+
+.section {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.sectionTitle {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}

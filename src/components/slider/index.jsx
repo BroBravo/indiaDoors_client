@@ -1,16 +1,16 @@
 import { useState } from 'react';
-import './index.scss';
+import styles from "./index.module.scss"; // Import SCSS module
 
-function Slider(props) {
+function Slider() {
   // State to track the current slide
   const [currentIndex, setCurrentIndex] = useState(0);
-  
+
   // Array of images
   const images = [
-    "/plywood.jpg",
-    "/plywood2.avif",
-    "/door1.webp",
-    "/door2.webp"
+    "/slider_pics/plywood.jpg",
+    "/slider_pics/plywood2.avif",
+    "/slider_pics/door1.webp",
+    "/slider_pics/door2.webp"
   ];
 
   // Function to handle right arrow click
@@ -28,24 +28,28 @@ function Slider(props) {
   };
 
   return (
-    <div className="slider_container">
-      <div className="arrow left" onClick={handlePrev}>
-        <img className="fullImage" src="arrowIcon.png" alt="Previous"/>
+    <div className={styles.sliderContainer}>
+      <div className={`${styles.arrow} ${styles.left}`} onClick={handlePrev}>
+        <img className={styles.fullImage} src="slider_pics/arrowIcon.png" alt="Previous" />
       </div>
 
-      <div className="slider" style={{ transform: `translateX(-${currentIndex * 100}%)` }}>
+      <div 
+        className={styles.slider} 
+        style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+      >
         {images.map((image, index) => (
-          <div className="slider_image_container" key={index}>
+          <div className={styles.sliderImageContainer} key={index}>
             <img src={image} alt={`Slide ${index + 1}`} />
           </div>
         ))}
       </div>
 
-      <div className="arrow right" onClick={handleNext}>
-        <img className="fullImage" src="arrowIcon.png" alt="Next"/>
+      <div className={`${styles.arrow} ${styles.right}`} onClick={handleNext}>
+        <img className={styles.fullImage} src="slider_pics/arrowIcon.png" alt="Next" />
       </div>
     </div>
   );
 }
 
 export default Slider;
+

@@ -1,0 +1,189 @@
+//  .container_style{
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     height: 100vh;
+//     background-color: #fff
+//   }
+// .login_image{
+//    width: 50vw;
+//    height: 40vw;
+// }
+//    .form_style{
+//     display: flex;
+//     flex-Direction: column;
+//     justify-Content: center;
+//     align-Items: centre;
+//     max-width: 300px;
+//     width: 100%;
+    
+//     padding: 20px;
+//     box-Shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+//     border-Radius: 5px;
+//     background-Color: #fff
+//   }
+
+//    .input_style  {
+//     padding: 10px;
+//     width: 100%;
+//     box-sizing: border-box;
+    
+//     border-radius: 5px;
+//     margin-bottom: 10px;
+//     cursor: text
+//   }
+
+//    .button_style  {
+//     padding: 10px 20px;
+//     background-Color: #3ebc82;
+//     color: rgb(255, 255, 255);
+//     border-radius: 5px;
+//     cursor: pointer;
+//     transition: .5s ease
+//   }
+
+//    .button_style:hover  {
+//     color: rgb(0, 0, 0);
+//     cursor: pointer
+//   }
+
+//   @media (max-width: 510px) {
+//     .container_style{
+//         display:flex;
+//         flex-direction: column ;
+//         align-items: center;
+//     }
+// }
+
+.page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw; 
+    perspective: 2500px; 
+    
+    
+}
+
+.inputStyle {
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom:10px;
+    border-bottom: 2px solid black !important;
+    border:none;
+    outline:none;
+    cursor: text;
+    border-radius: 5px;
+    background-color: whitesmoke;
+}
+
+.formContainer {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    align-items:center;
+    justify-content:center;
+    height: 80vh;
+    width: 30vw; 
+    box-shadow: 0px 0px 9px 2px rgba(0,0,0,0.51);
+    position: relative;
+    perspective: 3000px;
+    box-sizing: border-box;
+    padding: 10px;
+    background-color:white;
+    flex-wrap: wrap;
+     
+}
+
+.form{
+  display:flex;
+  width:100%;
+}
+.form.login{
+  flex-direction: column;
+}
+.form.signUp{
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.doorContainer {
+  perspective: 1000px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.door {
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  border: 2px solid #654321;
+  transform-origin: left;
+  transform-style: preserve-3d;
+  transition: transform 1s;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+  position: absolute;
+  z-index: 3;
+}
+
+.open {
+  transform: rotateY(-180deg);
+}
+
+button {
+  padding: 10px 20px;
+  height: max-content;
+  width: max-content;
+  background-color: #792a2a;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+
+.doorImage{
+  width: 100%;
+  height:100%;
+}
+.doorToggleContainer{
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position:absolute;
+  bottom:5%;
+  
+}
+
+.error{
+  color:red;
+  margin:0;
+  font-size: 14px;
+}
+.asterisk{
+  color: red;
+}
+
+.fieldContainer{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: flex-start;
+}
+.fieldContainerSignUp{
+    display: flex;
+    flex-direction: column;
+    width: 45%;
+    align-items: flex-start;
+}

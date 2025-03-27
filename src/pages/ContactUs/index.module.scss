@@ -1,0 +1,36 @@
+.doorContainer {
+  perspective: 1000px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.door {
+  width: 150px;
+  height: 300px;
+  background-color: #8B4513;
+  border: 2px solid #654321;
+  transform-origin: left;
+  transform-style: preserve-3d;
+  transition: transform 1s;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+}
+
+.open {
+  transform: rotateY(-180deg);
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+button:active {
+  transform: scale(0.98);
+}

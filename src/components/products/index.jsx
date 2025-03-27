@@ -1,11 +1,14 @@
-import "./index.scss"
-function section(){
+import ProductCard from "../productCard"
+import styles from "./index.module.scss"
+function products(){
     return(
-        <div className="section_container"> 
-            <h1 id="service_section">Products:-</h1>
-            <div className="section"></div>
+        <div className={styles.sectionContainer}> 
+            
+            <div className={styles.section}>
+                <ProductCard></ProductCard>
+            </div>
         </div>
-    )
+    );
 }
 
-export default section
+export default products

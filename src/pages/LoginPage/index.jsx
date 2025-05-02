@@ -48,32 +48,41 @@
 
 // export default LoginPage;
 
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 //import DynamicForm from "../../components/form";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styles from "./index.module.scss"; // Import SCSS module
-
+//import { getCountryCallingCode } from "libphonenumber-js";
 function LoginPage() {
 
-   const navigate = useNavigate(); // Initialize navigation
+  const navigate = useNavigate(); // Initialize navigation
   const [loginData, setloginData] = useState({ 
     username: "", 
     password: "" ,
     });
 
+  const [userType, setUserType] = useState("customer");
   const [signUpData,setsignUpData]=useState({
     firstName: "",
     lastName: "",
     phone: "",
+    email:"",
+    userType:userType,
     signupPassword: "", 
     confirmPassword: "",
   });
-  const [error, setError] = useState("");
+  
+  
   
   const [isOpen, setIsOpen] = useState(false);
 
   const [errors, setErrors] = useState({});
+
+
+  const isPhone = (value) =>
+    /^\+?\d{10,15}$/.test(value);
+
 
  const handleLogin = async (e) => {
   e.preventDefault();
@@ -89,12 +98,15 @@ function LoginPage() {
     setErrors(newErrors);
     return;
   }
-
+  let loginPayload = { ...loginData };
+  if (isPhone(loginPayload.username) && !loginPayload.username.startsWith('+91')) {
+    loginPayload.username = "+91" + loginPayload.username;
+  }
   try {
     const response = await fetch("http://localhost:4000/api/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(loginData),
+      body: JSON.stringify(loginPayload),
     });
 
     const data = await response.json();
@@ -112,9 +124,6 @@ function LoginPage() {
   }
 };
 
-
- 
-
   const handleLoginChange = (e) => {
     setloginData((prev) => ({
     ...prev,
@@ -128,19 +137,84 @@ function LoginPage() {
   };
 
   const handleSignUpChange = (e) => {
-    setsignUpData({ ...loginData, [e.target.name]: e.target.value });
+    setsignUpData((prev)=>({ ...prev, [e.target.name]: e.target.value }));
+    
+    setErrors((prevErrors) => ({
+    ...prevErrors,
+    [e.target.name]: "",
+  }));
   };
 
-  const handleFormSubmit = (data) => {
+  const handleSignUp = async (e) => {
+  e.preventDefault();
+  setErrors({});
 
-    console.log("Form Data:", data);
-  };
+  const newErrors = {};
 
+  if (!signUpData.firstName) newErrors.firstName = "First name is required";
+  if (!signUpData.phone) newErrors.phone = "Phone number is required";
+  if (!signUpData.signupPassword) newErrors.signupPassword = "Password is required";
+  if (signUpData.signupPassword !== signUpData.confirmPassword) {
+    newErrors.confirmPassword = "Passwords do not match";
+  }
+
+  if (userType === "business" && !signUpData.userType) {
+    newErrors.userType = "Business partner type is required";
+  }
   
+
+  if (Object.keys(newErrors).length > 0) {
+    setErrors(newErrors);
+    return;
+  }
+   
+  let signupPayload = { ...signUpData };
+  if (isPhone(signUpData.phone)) {
+    signupPayload.phone = "+91" + signupPayload.phone;
+  }
+
+  try {
+    const response = await fetch("http://localhost:4000/api/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...signupPayload}),
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      alert("Signup successful!");
+      setIsOpen(false); // Go back to login
+    } else {
+      alert(data.message || "Signup failed.");
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Something went wrong during signup.");
+  }
+};
+
 
   const toggleDoor = () => {
     setIsOpen(!isOpen);
   };
+
+  const handleUserTypeChange = (e) => {
+  const selectedType = e.target.value;
+  setUserType(selectedType);
+
+  setsignUpData((prev) => ({
+    ...prev,
+    userType: selectedType === "customer" ? "customer" : "", // clear if business
+  }));
+  if(selectedType==="customer")
+  {
+    setErrors((prevErrors) => ({
+    ...prevErrors,
+    userType: "",
+  }));
+  }
+};
 
   return (
     <div className={styles.page}>
@@ -153,7 +227,7 @@ function LoginPage() {
                   Username <span className={styles.asterisk}>*</span>
                 </label>
                 <input
-                  placeholder="Enter Username"
+                  placeholder="Enter email or phone"
                   type="text"
                   name="username"
                   className={styles.inputStyle}
@@ -185,7 +259,7 @@ function LoginPage() {
             
 
             <div style={{display:'flex',flexDirection:'row',flexWrap:'wrap',justifyContent:'space-between'}}>
-              <button className={styles.button}>Login</button>
+              <button type="submit" className={styles.button}>Login</button>
               <button className={styles.button}>Forgot Password</button>
             </div>
          </form>
@@ -205,7 +279,50 @@ function LoginPage() {
         
         {/* <DynamicForm fields={fields} onSubmit={handleFormSubmit}/> */}
 
-        <form  className={`${styles.form} ${styles.signUp}`}  onSubmit={handleLogin}>
+        <form  className={`${styles.form} ${styles.signUp}`}  onSubmit={handleSignUp}>
+            <div className={styles.radioSelect}>
+              <label>
+                <input
+                  type="radio"
+                  value="customer"
+                  checked={userType === "customer"}
+                  onChange={handleUserTypeChange}
+                />
+                Customer
+              </label>
+              <label >
+                <input
+                  type="radio"
+                  value="business"
+                  checked={userType === "business"}
+                  onChange={handleUserTypeChange}
+                />
+                Business Partner
+              </label>
+            </div>
+
+      {userType === "business" && (
+        <div className={styles.radioSelect}>
+            <label className={styles.label}>
+              User Type <span className={styles.asterisk}>*</span>
+            </label>
+            <select
+              name="userType"
+              className={styles.inputStyle}
+              
+              onChange={handleSignUpChange}        
+            >
+              <option value="">-- Select Role --</option>
+              <option value="retailer">Retailer</option>
+              <option value="carpenter">Carpenter</option>
+              <option value="interior-designer">Interior Designer</option>
+              <option value="builders">Builders</option>
+              
+            </select>
+            {errors.userType && <p className={styles.error}>{errors.userType}</p>}
+          </div>
+      )}
+
           {/* First Name */}
           <div className={styles.fieldContainerSignUp} >
             <label className={styles.label}>
@@ -257,8 +374,24 @@ function LoginPage() {
                 </p>
           </div>
           
+           <div className={styles.fieldContainerSignUp}>
+            <label className={styles.label}>
+              Email
+            </label>
+            <input
+              placeholder="Enter Email"
+              type="email"
+              name="email"
+              className={styles.inputStyle}
+              onChange={handleSignUpChange}
+            />
+            <p className={styles.error} style={{ minHeight: "16px", visibility: errors.email ? "visible" : "hidden" }}>
+                   {errors.email || "⠀"} {/* Unicode space to keep height */}
+                </p>
+          </div>
+          
 
-          <div className={styles.fieldContainerSignUp}>
+          {/* <div className={styles.fieldContainerSignUp}>
             <label className={styles.label}>
               User Type 
             </label>
@@ -272,10 +405,10 @@ function LoginPage() {
               <option value="carpenter">Carpenter</option>
               <option value="interior-designer">Interior Designer</option>
               <option value="builders">Builders</option>
-              <option value="customer">Customer</option> {/* Default selected */}
+              <option value="customer">Customer</option> // Default selected
             </select>
             {errors.userType && <p className={styles.error}>{errors.userType}</p>}
-          </div>
+          </div> */}
 
           {/* Password */}
           <div className={styles.fieldContainerSignUp}>
@@ -285,12 +418,12 @@ function LoginPage() {
             <input
               placeholder="Enter Password"
               type="password"
-              name="loginPassword"
+              name="signupPassword"
               className={styles.inputStyle}
               onChange={handleSignUpChange}
             />
-            <p className={styles.error} style={{ minHeight: "16px", visibility: errors.password ? "visible" : "hidden" }}>
-                   {errors.password || "⠀"} {/* Unicode space to keep height */}
+            <p className={styles.error} style={{ minHeight: "16px", visibility: errors.signupPassword ? "visible" : "hidden" }}>
+                   {errors.signupPassword || "⠀"} {/* Unicode space to keep height */}
                 </p>
           </div>
           
@@ -311,7 +444,7 @@ function LoginPage() {
           </div>
           
 
-          <div className={styles.fieldContainerSignUp}><button className={styles.button}>Submit</button></div>
+          <div className={styles.fieldContainerSignUp}><button type='submit' className={styles.button}>Submit</button></div>
           
         </form>
 

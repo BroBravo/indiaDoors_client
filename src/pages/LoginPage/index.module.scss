@@ -135,11 +135,11 @@
   transform: rotateY(-180deg);
 }
 
-button {
+.button {
   padding: 10px 20px;
   height: max-content;
   width: max-content;
-  background-color: #792a2a;
+  background-color: rgba(84, 43, 5, 0.919);
   color: white;
   border: none;
   border-radius: 5px;
@@ -147,7 +147,7 @@ button {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
-button:active {
+.button:active {
   transform: scale(0.98);
 }
 
@@ -186,4 +186,13 @@ button:active {
     flex-direction: column;
     width: 45%;
     align-items: flex-start;
+}
+
+.radioSelect{
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 2vh;
 }

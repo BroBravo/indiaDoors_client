@@ -1,12 +1,15 @@
 .card {
   width: 20%;
+  max-height: fit-content;
+  object-fit: contain;
   border-radius: 1rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   background: white;
   padding: 1rem;
   border: 1px solid #e5e7eb;
-
+  margin-left: 1vw;
+  margin-right: 1vw;
   &:hover {
     cursor: pointer;
   }
@@ -14,7 +17,7 @@
 
 
 .cardImage {
-  width: 100%;
+  width: 40%;
   height: 12rem;
   object-fit: cover;
 }

@@ -2,20 +2,16 @@ import { ShoppingCart } from "lucide-react";
 import styles from "./index.module.scss";
 import { useNavigate } from "react-router-dom";
 
-const ProductCard = () => {
+const ProductCard = ({product}) => {
   const navigate=useNavigate();
-  const product = {
-    name: "Nice Door",
-    image: "door2.webp", // Placeholder image
-    price: 7500,
-    mrp: 9000,
-  };
+  
   const handleNavigate=()=>{
-    navigate('/custom-door');
+    console.log("Navigating with product:", product);
+    navigate('/custom-door',{ state: { product } });
   }
   return (
     <div className={styles.card} onClick={handleNavigate}>
-      <img src={product.image} alt={product.name} className={styles.cardImage} />
+      <img src={product.front_wrap} alt={product.name} className={styles.cardImage} />
       <div className={styles.cardContent}>
         <h2 className={styles.cardTitle}>{product.name}</h2>
         <p className={styles.priceContainer}>

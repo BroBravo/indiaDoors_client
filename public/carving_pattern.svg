@@ -1,0 +1,14 @@
+<svg viewBox="0 0 512 612" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#fff" stroke-width="2">
+  <!-- Outer rectangle -->
+  <rect x="40" y="40" width="432" height="532" rx="10" ry="10"/>
+
+  <!-- Top panel -->
+  <rect x="80" y="80" width="352" height="120" rx="8" ry="8"/>
+
+  <!-- Center vertical lines (panel-style) -->
+  <line x1="180" y1="240" x2="180" y2="500" />
+  <line x1="332" y1="240" x2="332" y2="500" />
+
+  <!-- Bottom panel -->
+  <rect x="80" y="460" width="352" height="80" rx="8" ry="8"/>
+</svg>

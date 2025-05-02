@@ -9,11 +9,11 @@ const menuItems = [
   },
   {
     label: "ABOUT US",
-    to: "/about",
+    to: "/about-us#about",
   },
   {
     label: "CONTACT US",
-    to: "/contact",
+    to: "/about-us#contact",
   },
   {
     label: "CUSTOMIZE DOOR",

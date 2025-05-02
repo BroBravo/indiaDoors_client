@@ -9,6 +9,8 @@ import ProfilePage from "./pages/ProfilePage";
 import {Routes,Route,  } from 'react-router-dom'
 import Footer from './components/footer';
 import CustomDoor from './pages/CustomDoor';
+import CartPage from './pages/Cart';
+
 function App() {
   return (
     <div className="App">
@@ -19,11 +21,11 @@ function App() {
       <Routes>
          <Route path="/" element={<Home />} /> {/* Default Route */}
          <Route path="/home" element={<Home />} />
-         < Route  path='/about' element={<About/> }/>
-         < Route  path='/contact' element={<Contact/>}/>
+         < Route  path='/about-us' element={<About/> }/>
          < Route  path='/login' element={<Login/>}/>
          <Route path="/profile" element={<ProfilePage />} />
          <Route path="/custom-door" element={<CustomDoor/>} />
+         <Route path="/cart" element={<CartPage/>}/>
       </Routes>
       <Footer/>
     </div>

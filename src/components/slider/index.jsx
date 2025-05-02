@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import styles from "./index.module.scss"; // Import SCSS module
-
+import React from 'react';
 function Slider() {
   // State to track the current slide
   const [currentIndex, setCurrentIndex] = useState(0);

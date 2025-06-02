@@ -13,7 +13,7 @@
 
 //   // Fetch dimensions from backend using Axios
 //   useEffect(() => {
-//     axios.get("http://localhost:4000/api/dimensions")
+//     axios.get("http://localhost:4000/product/dimensions")
 //       .then((response) => {
 //         setWidthOptions(response.data.widthOptions);
 //         setHeightOptions(response.data.heightOptions);
@@ -120,7 +120,7 @@
 //   const [selectedHeight, setSelectedHeight] = useState(null);
 
 //   useEffect(() => {
-//   axios.get("http://localhost:4000/api/dimensions")
+//   axios.get("http://localhost:4000/product/dimensions")
 //     .then((response) => {
 //       const widthOptions = response.data.map((row) => ({
 //         value: row.width_in,
@@ -256,9 +256,11 @@ import { useLocation } from 'react-router-dom';
 import FlipDoor from "../../components/flipDoor";
 import DoorPriceCalculator from "../../components/doorPriceCalculator";
 import { useCart } from "../../context/cartContext";
+import { useUser } from "../../context/userContext";
 
 const CustomOption = (props) => {
   const { data, innerRef, innerProps } = props;
+
   return (
     <div ref={innerRef} {...innerProps} className={styles.option}>
       <img src={data.image} alt={data.label} />
@@ -302,15 +304,17 @@ const CustomDoor = () => {
   const [backWrap, setBackWrap] = useState(null);
   const [frontCarving, setFrontCarving] = useState(null);
   const [backCarving, setBackCarving] = useState(null);
-
+  const [doorCount,setDoorCount]=useState(1);
   const { addItem } = useCart();
-
+  const isAddDisabled = !selectedWidth || !selectedHeight ;
+  const { user } = useUser();
   const location = useLocation();
+  const baseWoodPrice=70;
   //console.log(location.state); 
   const product = location.state?.product;
   useEffect(() => {
     if (!product || wrapOptions.length === 0) return;
-   //console.log(product); 
+   console.log(product); 
     setSelectedHeight({
       in: { value: product.height_in, label: `${product.height_in} in` },
       cm: { value: toCM(product.height_in), label: `${toCM(product.height_in)} cm` },
@@ -322,19 +326,20 @@ const CustomDoor = () => {
       cm: { value: toCM(product.width_in), label: `${toCM(product.width_in)} cm` },
       mm: { value: toMM(product.width_in), label: `${toMM(product.width_in)} mm` },
     });
-   console.log(wrapOptions)
+   //console.log(wrapOptions)
     // Set wraps
-    const front = wrapOptions.find(wrap => wrap.image === product.front_wrap);
-    const back = wrapOptions.find(wrap => wrap.image === product.back_wrap);
+    const front = wrapOptions.find(wrap => wrap.image === product.front_wrap || wrap.image === product.front_wrap_image );
+    const back = wrapOptions.find(wrap => wrap.image === product.back_wrap || wrap.image === product.back_wrap_image);
 
     if (front) setFrontWrap(front);
     if (back) setBackWrap(back);
+    setDoorCount(product?.quantity||1);
   
 }, [product,wrapOptions]); 
 
 
  useEffect(() => {
-  axios.get("http://localhost:4000/api/dimensions")
+  axios.get("http://localhost:4000/product/dimensions")
     .then((response) => {
       if (!response.data || !response.data.widthOptions || !response.data.heightOptions) {
         console.error("Unexpected API response format:", response.data);
@@ -368,7 +373,7 @@ const CustomDoor = () => {
     })
     .catch((error) => console.error("Error fetching dimensions:", error));
 
-    axios.get("http://localhost:4000/api/laminates")
+    axios.get("http://localhost:4000/product/laminates")
     .then((response)=>{
       if (!response.data) {
         console.error("Unexpected API response format:", response.data);
@@ -385,7 +390,7 @@ const CustomDoor = () => {
     })
     .catch((error) => console.error("Error fetching laminates:", error))
 
-     axios.get("http://localhost:4000/api/carvings")
+     axios.get("http://localhost:4000/product/carvings")
     .then((response)=>{
       if (!response.data) {
         console.error("Unexpected API response format:", response.data);
@@ -660,26 +665,75 @@ const CustomDoor = () => {
             backWrap={backWrap} 
             frontCarving={frontCarving} 
             backCarving={backCarving}
-            baseWoodPrice={70}
+            baseWoodPrice={baseWoodPrice}
             doorWidthInches={selectedWidth?.in?.value || 0}
             doorHeightInches={selectedHeight?.in?.value || 0}
+            doorCount={doorCount}
+            setDoorCount={setDoorCount}
           /> 
           <div className={styles.buttonContainer} >
-            <button className={styles.addToCartbutton}>Buy now</button>
-            <button className={styles.addToCartbutton} style={{backgroundColor:"rgb(245, 81, 81)"}}
-                onClick={() => {
-                const newItem = {
-                  name: "Custom Door",
-                  size: `${selectedWidth?.in?.value}in x ${selectedHeight?.in?.value}in`,
-                  frontWrapPrice: frontWrap?.price || 0,
-                  backWrapPrice: backWrap?.price || 0,
-                  frontCarvingPrice: frontCarving?.price || 0,
-                  backCarvingPrice: backCarving?.price || 0,
-                  quantity: 1,
-                };
-                addItem(newItem);
-                
-              }}
+            
+            <button className={styles.addToCartbutton} 
+                style={{backgroundColor:"rgb(70, 98, 65)"}}
+                disabled={isAddDisabled}
+                 onClick={async () => {
+                  const front_wrap_price = Number(frontWrap?.price) || 0;
+                  const back_wrap_price = Number(backWrap?.price) || 0;
+                  const front_carving_price = Number(frontCarving?.price) || 0;
+                  const back_carving_price = Number(backCarving?.price) || 0;
+                  const basePrice=Number(baseWoodPrice*(selectedWidth?.in.value*selectedHeight?.in.value)/144);
+                  const item_price = front_wrap_price + back_wrap_price + front_carving_price + back_carving_price + basePrice;
+                  
+                  if (isAddDisabled) return;
+                  if (!user?.identifier) {
+                    alert("Please log in to add to cart.");
+                    return;
+                  }
+
+                  const newItem = {
+                    id: typeof product?.id === "number" ? product.id : null,
+                    item_name: product?.name || "Custom Door",
+                    width_in: selectedWidth?.in?.value,
+                    height_in: selectedHeight?.in?.value,
+                    front_wrap: frontWrap?.label || 'None',
+                    front_wrap_image:frontWrap?.value,
+                    back_wrap: backWrap?.label || 'None',
+                    back_wrap_image: backWrap?.value,
+                    front_wrap_price: frontWrap?.price || 0,
+                    back_wrap_price: backWrap?.price || 0,
+                    front_carving: frontCarving?.label || 'None',
+                    back_carving: backCarving?.label || 'None',
+                    front_carving_price: frontCarving?.price || 0,
+                    back_carving_price: backCarving?.price || 0,
+                    item_amount: item_price || 0,
+                    quantity: doorCount || 1,
+                    identifier: user.identifier, // phone or email
+                  };
+
+                  try {
+                    const res = await axios.post(
+                      "http://localhost:4000/user/cart/add",
+                      newItem,
+                      { withCredentials: true }
+                    );
+
+                    if (res.data.success) {
+                      alert("Added to cart!");
+                      const localItem = {
+                        ...newItem,
+                        name: newItem.item_name, 
+                      };
+                      addItem(localItem);
+                    } else {
+                      alert("Failed to add: " + res.data.message);
+                    }
+                  } catch (error) {
+                    console.error("Add to cart failed:", error);
+                    alert("Error adding to cart. Try again.");
+                  }
+
+                }}
+
             >Add to Cart</button>
           </div>      
       </div>  

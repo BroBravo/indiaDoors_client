@@ -10,7 +10,7 @@ function Products(){
 
   useEffect(() => {
     axios
-      .get("http://localhost:4000/api/products") 
+      .get("http://localhost:4000/product/productList") 
       .then((response) => {
         setProducts(response.data);
         setLoading(false);

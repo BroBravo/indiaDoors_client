@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+//import { useState, useEffect } from "react";
 import styles from "./index.module.scss";
 
-const DoorPriceCalculator = ({ frontWrap, backWrap, frontCarving, backCarving, baseWoodPrice, doorWidthInches, doorHeightInches }) => {
-  const [doorCount, setDoorCount] = useState(1);
+const DoorPriceCalculator = ({ frontWrap, backWrap, frontCarving, backCarving, baseWoodPrice, doorWidthInches, doorHeightInches, doorCount, setDoorCount }) => {
+ // const [doorCount, setDoorCount] = useState(quantity);
 
   const getPrice = (item) => (item?.price ? parseFloat(item.price) : 0);
 
@@ -17,8 +17,8 @@ const DoorPriceCalculator = ({ frontWrap, backWrap, frontCarving, backCarving, b
   const sqft = widthFt * heightFt;
   const pricePerDoor = sqft > 0 ? (baseWoodPrice * sqft).toFixed(2) : "N/A";
    
-  const totalPerDoor = frontWrapPrice + backWrapPrice + frontCarvingPrice + backCarvingPrice + (pricePerDoor==="N/A"?0:parseFloat(pricePerDoor));
-  const totalAllDoors = totalPerDoor * doorCount; 
+  const totalPerDoor = (frontWrapPrice + backWrapPrice + frontCarvingPrice + backCarvingPrice + (pricePerDoor==="N/A"?0:parseFloat(pricePerDoor))).toFixed(2);
+  const totalAllDoors = (totalPerDoor * doorCount).toFixed(2); 
 
   const handleChange = (e) => {
     const value = parseInt(e.target.value);

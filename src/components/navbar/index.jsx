@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
-import styles from "./index.module.scss"; // Import SCSS module
+import styles from "./index.module.scss"; 
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import { FaShoppingCart } from "react-icons/fa";
+import { useUser } from "../../context/userContext";
 const menuItems = [
   {
     label: "HOME",
@@ -26,35 +28,44 @@ function Navbar() {
   const location=useLocation();
   const [loggedInUsername, setLoggedInUsername] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
-  const fetchUserInfo = async () => {
-  const token = localStorage.getItem("token");
-  if (!token) return; // No token, user is not logged in
-
+  const { user, setUser } = useUser(); 
+ const handleLogout = async () => {
   try {
-    const response = await axios.get("http://localhost:4000/auth", {
-      headers: { Authorization: `Bearer ${token}` }, // Send token in request
-    });
-
-    setLoggedInUsername(response.data.username); // Set username from response
-   // window.location.reload();
-
-    // if (location.pathname !== "/home") {
-    //     navigate("/home");
-    //     //window.location.reload();
-
-    //   }
-  } catch (err) {
-    console.error("Token expired or invalid", err);
-    localStorage.removeItem("token"); // Remove expired token
-    setLoggedInUsername(null); // Reset to default
+    await axios.post('http://localhost:4000/api/logout',{},{ withCredentials: true }); // hit the backend to clear cookie
+    setUser(null);
+    navigate("/home");
+  } catch (error) {
+    console.error("Logout failed", error);
   }
 };
+//   const fetchUserInfo = async () => {
+//   const token = localStorage.getItem("token");
+//   if (!token) return; // No token, user is not logged in
 
-  // Call fetchUserInfo on component mount
-  useEffect(() => {
-    fetchUserInfo();
-  }, []);
+//   try {
+//     const response = await axios.get("http://localhost:4000/auth", {
+//       headers: { Authorization: `Bearer ${token}` }, // Send token in request
+//     });
+
+//     setLoggedInUsername(response.data.username); // Set username from response
+//    // window.location.reload();
+
+//     // if (location.pathname !== "/home") {
+//     //     navigate("/home");
+//     //     //window.location.reload();
+
+//     //   }
+//   } catch (err) {
+//     console.error("Token expired or invalid", err);
+//     localStorage.removeItem("token"); // Remove expired token
+//     setLoggedInUsername(null); // Reset to default
+//   }
+// };
+
+//   // Call fetchUserInfo on component mount
+//   useEffect(() => {
+//     fetchUserInfo();
+//   }, []);
 
   return (
     <nav className={styles.navbar}>
@@ -65,15 +76,19 @@ function Navbar() {
           </Link>
         </div>
       ))}
-
+      
+      {user && <Link to="/cart" className={styles.cartIconContainer}>
+        <FaShoppingCart className={styles.cartIcon} />
+       </Link>
+       } 
        <div className={styles.loginInfo}>
-        {loggedInUsername ? (
+        {user ? (
           // ✅ Show username & logout button if logged in
           <>
             <Link onMouseEnter={() => setIsDropdownOpen(true)}
                   onMouseLeave={() => setIsDropdownOpen(false)} 
                    className={`${styles.navbarItemsLink} ${styles.loginInfoUsername} `}>
-                {loggedInUsername}
+                {user.username}
             </Link>
             <div className={styles.loginImageContainer}>
               <img src="/defaultuser.webp" className={styles.loginInfoImage} alt="User" />
@@ -86,11 +101,7 @@ function Navbar() {
                   </Link>
                 </div >
                 <div className={styles.dropDownContainerItem}>
-                  <button className={styles.logoutButton} onClick={() => {
-                      localStorage.removeItem("token"); // Remove token
-                      setLoggedInUsername(null); // Reset state
-                      navigate("/home"); // Redirect to login page
-                      }}>Logout</button>
+                  <button className={styles.logoutButton} onClick={handleLogout}>Logout</button>
                 </div>
                 
             </div>)}

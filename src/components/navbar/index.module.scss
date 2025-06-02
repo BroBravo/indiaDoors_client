@@ -11,7 +11,7 @@
 
 .navbarItems {
     padding: 2vh;
-    font-size: 2vw;
+    font-size: 4vmin;
     cursor: pointer;
     border-bottom: 2px solid transparent;
     font-weight: 500;
@@ -82,4 +82,21 @@
     color:black;
     font-size: 3vh;
     text-decoration: none;
+}
+
+.cartIconContainer {
+  padding: 0 1rem;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.cartIcon {
+  font-size: 2rem;
+  color: #654321; // Adjust as needed
+  transition: transform 0.2s;
+}
+
+.cartIcon:hover {
+  transform: scale(1.1);
 }

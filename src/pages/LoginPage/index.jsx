@@ -53,9 +53,11 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styles from "./index.module.scss"; // Import SCSS module
+import { useUser } from "../../context/userContext";
 //import { getCountryCallingCode } from "libphonenumber-js";
 function LoginPage() {
 
+  const {user,setUser}=useUser();
   const navigate = useNavigate(); // Initialize navigation
   const [loginData, setloginData] = useState({ 
     username: "", 
@@ -76,13 +78,15 @@ function LoginPage() {
   
   
   const [isOpen, setIsOpen] = useState(false);
-
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showSignupPassword, setShowSignupPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
 
-  const isPhone = (value) =>
-    /^\+?\d{10,15}$/.test(value);
-
+  const isPhone = (value) => /^\+?\d{10,15}$/.test(value);
+  const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
  const handleLogin = async (e) => {
   e.preventDefault();
@@ -102,28 +106,32 @@ function LoginPage() {
   if (isPhone(loginPayload.username) && !loginPayload.username.startsWith('+91')) {
     loginPayload.username = "+91" + loginPayload.username;
   }
-  try {
-    const response = await fetch("http://localhost:4000/api/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(loginPayload),
-    });
 
-    const data = await response.json();
-    if (data.success) {
-      localStorage.setItem("token", data.token);
-      alert("Login successful!");
-      navigate("/home");
-      window.location.reload();
-    } else {
-      alert("Invalid credentials");
-    }
+  try {
+  const response = await axios.post("http://localhost:4000/api/login", loginPayload, {
+    headers: { "Content-Type": "application/json" },
+    withCredentials: true, 
+  });
+
+  const data = response.data; 
+
+  if (data.success) {
+
+    const authRes = await axios.get("http://localhost:4000/api/auth", {
+      withCredentials: true,
+    });
+    setUser(authRes.data);
+    alert("Login successful!");
+    navigate("/home");
+   // window.location.reload();
+  } else {
+    alert(data.message || "Invalid credentials");
+  }
   } catch (error) {
     console.error("Error:", error);
     alert("Server unable to respond");
   }
-};
-
+ };
   const handleLoginChange = (e) => {
     setloginData((prev) => ({
     ...prev,
@@ -135,7 +143,7 @@ function LoginPage() {
     [e.target.name]: "",
   }));
   };
-
+ 
   const handleSignUpChange = (e) => {
     setsignUpData((prev)=>({ ...prev, [e.target.name]: e.target.value }));
     
@@ -161,7 +169,7 @@ function LoginPage() {
   if (userType === "business" && !signUpData.userType) {
     newErrors.userType = "Business partner type is required";
   }
-  
+  console.log(signUpData.userType)
 
   if (Object.keys(newErrors).length > 0) {
     setErrors(newErrors);
@@ -172,7 +180,7 @@ function LoginPage() {
   if (isPhone(signUpData.phone)) {
     signupPayload.phone = "+91" + signupPayload.phone;
   }
-
+  console.log(signupPayload.userType)
   try {
     const response = await fetch("http://localhost:4000/api/signup", {
       method: "POST",
@@ -216,7 +224,14 @@ function LoginPage() {
   }
 };
 
+ useEffect(() => {
+  if (user) {
+    navigate("/home");
+  }
+}, [user, navigate]);
+
   return (
+   
     <div className={styles.page}>
       
        <div className={styles.formContainer}>
@@ -247,11 +262,14 @@ function LoginPage() {
               </label>
               <input
                 placeholder="Enter Password"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 name="password"
                 className={styles.inputStyle}
                 onChange={handleLoginChange}
               />
+               <button type="button" onClick={() => setShowPassword(prev => !prev)}>
+                {showPassword ? "Hide" : "Show"}
+              </button>
               <p className={styles.error} style={{ minHeight: "16px", visibility: errors.password ? "visible" : "hidden" }}>
                    {errors.password || "⠀"} {/* Unicode space to keep height */}
                 </p>
@@ -259,7 +277,9 @@ function LoginPage() {
             
 
             <div style={{display:'flex',flexDirection:'row',flexWrap:'wrap',justifyContent:'space-between'}}>
-              <button type="submit" className={styles.button}>Login</button>
+              <button type="submit" className={styles.button} disabled={loading}>
+              {loading ? "Logging in..." : "Login"}
+              </button>
               <button className={styles.button}>Forgot Password</button>
             </div>
          </form>
@@ -454,6 +474,7 @@ function LoginPage() {
         </div>
       </div> 
     </div>
+         
   );
 }
 

@@ -4,7 +4,7 @@ import { useCart } from "../../context/cartContext";
 import { useUser } from "../../context/userContext";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import { Helmet } from "react-helmet";
 const CheckoutPage = () => {
   const { cartItems, clearCart } = useCart();
   const { user } = useUser();
@@ -63,7 +63,12 @@ const CheckoutPage = () => {
 
 
   return (
+    <>
+       <Helmet>
+                <title>Checkout | India Doors</title>
+       </Helmet>
     <div className={styles.checkoutContainer}>
+       
       <h1>Checkout</h1>
       <div className={styles.summaryBox}>
         {cartItems.map((item, idx) => (
@@ -86,6 +91,7 @@ const CheckoutPage = () => {
         </button>
       </div>
     </div>
+    </>
   );
 };
 

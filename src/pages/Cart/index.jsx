@@ -1,12 +1,12 @@
 //import { Button } from "@/components/ui/button";
 //import { Card, CardContent } from "@/components/ui/card";
-import { Trash2 } from "lucide-react";
+import {  ArrowRightCircle, LucideTrash , LucideEdit} from "lucide-react";
 import styles from "./index.module.scss";
 import { useCart } from "../../context/cartContext";
 import { useUser } from "../../context/userContext";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { Helmet } from "react-helmet";
 const CartPage = () => {
   const { cartItems, updateQuantity, removeItem, checkout, addItem } = useCart();
   const formatCurrency = (num) => `₹${num.toFixed(2)}`;
@@ -29,8 +29,14 @@ useEffect(() => {
  
 
   return (
+
+    <>
+       <Helmet>
+                <title>Your cart | India Doors</title>
+       </Helmet>
     <div className={styles.container}>
-      <h1>🛒 Your Cart</h1>
+       
+      <h1>🛒 My Cart</h1>
 
       {cartItems.length === 0 ? (
         <p className={styles.emptyMessage}>Your cart is empty.</p>
@@ -76,13 +82,13 @@ useEffect(() => {
                         (baseWoodPrice*(item.width_in * item.height_in)/144)).toFixed(2) * item.quantity
                     )}
                   </p>
-                  <button className={styles.removeBtn} onClick={()=>{
+                  <button className={styles.removeBtn} style={{color:"#3b82f6"}} onClick={()=>{
                           const product=item;
                           console.log(product);
                           navigate('/custom-door',{ state: { product } });
-                        }}>Edit item</button>
+                        }}><LucideEdit size={16}/>Edit item</button>
                   <button className={styles.removeBtn} onClick={() => removeItem(idx, item.id)}>
-                    <Trash2 size={16} /> Remove
+                    <LucideTrash size={16} /> Remove
                   </button>
                 </div>
               </div>
@@ -91,13 +97,14 @@ useEffect(() => {
 
           <div className={styles.totalSection}>
             <p className={styles.total}>Total: {formatCurrency(total)}</p>
-            <button className={styles.checkoutBtn} onClick={checkout}>
-              Proceed to Checkout
+            <button className={styles.checkoutBtn}  onClick={checkout}>
+              Proceed to Checkout &nbsp;<ArrowRightCircle/>
             </button>
           </div>
         </div>
       )}
     </div>
+    </>
   );
 };
 

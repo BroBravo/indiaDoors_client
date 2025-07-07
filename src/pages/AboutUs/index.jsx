@@ -1,7 +1,7 @@
 import styles from "./index.module.scss";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-
+import { Helmet } from "react-helmet";
 const AboutContactPage = () => {
    const location = useLocation();
    useEffect(() => {
@@ -16,6 +16,11 @@ const AboutContactPage = () => {
   }, [location]);
   
   return (
+    <>
+       <Helmet>
+                <title>About us | India Doors</title>
+       </Helmet>
+   
     <div className={styles.container}>
       
       {/* About Us */}
@@ -107,6 +112,7 @@ const AboutContactPage = () => {
         </form>
       </section>
     </div>
+    </>
   );
 };
 

@@ -257,7 +257,7 @@ import FlipDoor from "../../components/flipDoor";
 import DoorPriceCalculator from "../../components/doorPriceCalculator";
 import { useCart } from "../../context/cartContext";
 import { useUser } from "../../context/userContext";
-
+import { Helmet } from "react-helmet";
 const CustomOption = (props) => {
   const { data, innerRef, innerProps } = props;
 
@@ -382,8 +382,8 @@ const CustomDoor = () => {
 
       const wraps = response.data.map(wrap => ({
         label: wrap.name,
-        value: wrap.image,
-        image: wrap.image,
+        value: wrap.image_path,
+        image: wrap.image_path,
         price: wrap.price
       }));
       setWrapOptions(wraps);
@@ -399,8 +399,8 @@ const CustomDoor = () => {
 
       const carvs = response.data.map(carv => ({
         label: carv.name,
-        value: carv.image,
-        image: carv.image,
+        value: carv.image_path,
+        image: carv.image_path,
         price: carv.price
       }));
       setCarvingOptions(carvs);
@@ -461,7 +461,12 @@ const CustomDoor = () => {
   }
 
   return (
+    <>
+       <Helmet>
+                <title>Custom door | India Doors</title>
+       </Helmet>
     <div style={{display:"flex", flexDirection:"row"}}>
+       
         <FlipDoor widthInInches={selectedWidth?.in?.value || 0}
                   heightInInches={selectedHeight?.in?.value || 0}
                   frontWrap={frontWrap?.value|| null}
@@ -685,14 +690,14 @@ const CustomDoor = () => {
                   const item_price = front_wrap_price + back_wrap_price + front_carving_price + back_carving_price + basePrice;
                   
                   if (isAddDisabled) return;
-                  if (!user?.identifier) {
-                    alert("Please log in to add to cart.");
+                  if (!user?.userId) {
+                    window.alert("Please log in to add to cart.");
                     return;
                   }
 
                   const newItem = {
                     id: typeof product?.id === "number" ? product.id : null,
-                    item_name: product?.name || "Custom Door",
+                    item_name: product?.name || product?.item_name  || "Custom Door",
                     width_in: selectedWidth?.in?.value,
                     height_in: selectedHeight?.in?.value,
                     front_wrap: frontWrap?.label || 'None',
@@ -707,18 +712,19 @@ const CustomDoor = () => {
                     back_carving_price: backCarving?.price || 0,
                     item_amount: item_price || 0,
                     quantity: doorCount || 1,
-                    identifier: user.identifier, // phone or email
+                    //identifier: user.identifier, // phone or email
                   };
-
+                  const action= newItem.id? 'update':'add';
                   try {
-                    const res = await axios.post(
-                      "http://localhost:4000/user/cart/add",
+                   
+                      const res = await axios.post(
+                      `http://localhost:4000/user/cart/${action}`,
                       newItem,
                       { withCredentials: true }
                     );
-
+                    
                     if (res.data.success) {
-                      alert("Added to cart!");
+                      alert(res.data.message);
                       const localItem = {
                         ...newItem,
                         name: newItem.item_name, 
@@ -728,8 +734,8 @@ const CustomDoor = () => {
                       alert("Failed to add: " + res.data.message);
                     }
                   } catch (error) {
-                    console.error("Add to cart failed:", error);
-                    alert("Error adding to cart. Try again.");
+                    console.error("Failed to add/update to cart:", error);
+                    alert("Error adding/updating to cart. Try again.");
                   }
 
                 }}
@@ -738,6 +744,7 @@ const CustomDoor = () => {
           </div>      
       </div>  
     </div>
+    </>
   );
 };
 

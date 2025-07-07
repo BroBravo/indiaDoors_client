@@ -110,9 +110,9 @@
 //   );
 // }
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styles from "./index.module.scss"; // Import SCSS module
-
+import { Helmet } from 'react-helmet';
 const Door = () => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -121,12 +121,18 @@ const Door = () => {
   };
 
   return (
+    <>
+       <Helmet>
+                <title>Contact us | India Doors</title>
+       </Helmet>
     <div className={styles.doorContainer}>
+       
       <div className={`${styles.door} ${isOpen ? styles.open : ''}`}></div>
       <button className={styles.button} onClick={toggleDoor}>
         Open/Close Door
       </button>
     </div>
+    </>
   );
 };
 

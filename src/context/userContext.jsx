@@ -1,8 +1,11 @@
 import { createContext, useState, useEffect, useContext } from "react";
 import axios from "axios";
+import { useNavigate, useLocation } from "react-router-dom";
 const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
+  const navigate=useNavigate();
+  const location = useLocation();
   const [user, setUser] = useState(null); // will hold { username, identifier } or null
   const [loading, setLoading] = useState(true);
 
@@ -24,7 +27,7 @@ export const UserProvider = ({ children }) => {
     };
 
     fetchUser();
-  }, []);
+  }, [location.pathname]);
 
   return (
     <UserContext.Provider value={{ user, setUser, loading }}>

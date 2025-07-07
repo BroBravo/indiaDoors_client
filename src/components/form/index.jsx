@@ -1,7 +1,11 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./index.module.scss"
-const DynamicForm = ({ fields, onSubmit }) => {
-  const [formData, setFormData] = useState({});
+const DynamicForm = ({ fields, onSubmit, initialData = {}  }) => {
+  const [formData, setFormData] = useState(initialData);
+
+   useEffect(() => {
+    setFormData(initialData);
+  }, [initialData]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -40,7 +44,7 @@ const DynamicForm = ({ fields, onSubmit }) => {
         </div>
       ))}
 
-      <button type="submit">Submit</button>
+      <button type="submit">{initialData?.id ? "Update" : "Submit"}</button>
     </form>
   );
 };

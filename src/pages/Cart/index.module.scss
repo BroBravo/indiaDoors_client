@@ -111,8 +111,11 @@
 }
 
 .totalSection {
-  text-align: right;
-  margin-top: 2rem;
+    text-align: right;
+    margin-top: 2rem;
+    align-items: flex-end;
+    display: flex;
+    flex-direction: column;
 
   .total {
     font-size: 1.25rem;
@@ -120,6 +123,23 @@
   }
 
   .checkoutBtn {
+    display: flex;
     margin-top: 1rem;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #e3671c;
+    color: white;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    cursor: pointer;
   }
+  .checkoutBtn:hover {
+   
+    ArrowRightCircle{
+
+    }
+
+  }
+
 }

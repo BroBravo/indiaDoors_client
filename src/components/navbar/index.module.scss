@@ -1,21 +1,96 @@
+// .navbar {
+//     display: flex;
+//     background-color: white;
+//     text-decoration: none;
+//     top: 0;
+//     position: sticky;
+//     width: 100%;
+//     z-index: 3;
+//     border-bottom: 3px solid rgba(84, 43, 5, 0.919);
+// }
 .navbar {
+  display: flex;
+   align-items: center;
+//   justify-content: space-between;
+  background-color: white;
+  top: 0;
+  position: sticky;
+  width: 100%;
+  z-index: 3;
+  border-bottom: 3px solid rgba(84, 43, 5, 0.919);
+//  padding: 1vh 2vw;
+  flex-wrap: wrap;
+}
+
+.mobileMenuIcon {
+  display: none;
+  font-size: 5vmax;
+  cursor: pointer;
+}
+
+.menuItems {
+  display: flex;
+  flex-direction: row;
+}
+
+// .menuItems.open {
+//   display: flex;
+//   flex-direction: column;
+//   width: 100%;
+// }
+
+@media (max-width: 768px) {
+  .mobileMenuIcon {
     display: flex;
-    background-color: white;
-    text-decoration: none;
-    top: 0;
-    position: sticky;
+    color: rgba(84, 43, 5, 0.919)
+  }
+
+  .menuItems {
+    display: none;
     width: 100%;
-    z-index: 3;
-    border-bottom: 3px solid rgba(84, 43, 5, 0.919);
+    flex-direction: column;
+    background-color: white;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 10;
+    border-top: 1px solid #ccc;
+  }
+
+  .menuItems.open {
+    display: flex;
+    width: 50vw;
+    height: 100vh;
+  }
+
+  .navbarItems {
+    padding: 1rem;
+    font-size: 1.2rem;
+    border-bottom: 2px solid rgb(176, 169, 169);
+  }
+
+  .loginInfo {
+    position: static;
+    margin-top: 10px;
+    justify-content: flex-end;
+  }
+
+  .loginInfoUsername {
+    font-size: 1rem;
+  }
+
+  .cartIconContainer {
+    padding: 0.5rem 1rem;
+  }
 }
 
 .navbarItems {
     padding: 2vh;
-    font-size: 4vmin;
+    font-size: 20px;
     cursor: pointer;
     border-bottom: 2px solid transparent;
     font-weight: 500;
-    font-family:'Times New Roman', Times, serif;
+    font-family:Inter, -apple-system, Helvetica, Arial, sans-serif;
 }
 
 .navbarItems:hover {
@@ -25,6 +100,8 @@
 .navbarItemsLink {
     text-decoration: none;
     color: rgba(93, 53, 15, 0.919);
+    display: block;
+   
 }
 
 .loginInfo {
@@ -44,13 +121,16 @@
     color: black;
     white-space: nowrap;
     align-items: center;
-    font-size: 2vw;
+    font-size: 3vmin;
     margin-right: 1vw;
 }
 
 .loginImageContainer {
+    display: flex;
+    align-items: center;
     flex: 1;
     object-fit: contain;
+    font-size: 3vmin;
 }
 
 .loginInfoImage {
@@ -63,15 +143,38 @@
     position:absolute;
     background-color: white;
     top:100%;
-    display: flex;
+    right: 0;
+    z-index: 100;
+    display: none;
     flex-direction: column;
-    border-radius: 5px;
-    border: 2px solid;
+    //border-radius: 5px;
+   // border: 2px solid;
+    box-shadow: 1px 1px 11px 2px rgba(0, 0, 0, 0.16);
+   //border: 1px solid black;
+    min-width: 120px;
 }
+.dropdownWrapper {
+  position: relative;
+  display: flex;
+
+    &:hover .dropDownContainer {
+    display: flex;
+  }
+}
+
+
 .dropDownContainerItem{
     display:flex;
-    height:4vh;
-    justify-content: center;
+  //  height:4vh;
+    font-size: 14px;
+    justify-content: space-between;
+    align-items: center;
+    padding:5px;
+    border-bottom: 1px solid #a9a3a3;
+}
+
+.dropDownContainerItem svg{
+    margin-right:5px;
 }
 .logoutButton{
     background-color: rgb(208, 62, 62);
@@ -80,8 +183,9 @@
 }
 .profileLink{
     color:black;
-    font-size: 3vh;
+    
     text-decoration: none;
+    
 }
 
 .cartIconContainer {
@@ -99,4 +203,15 @@
 
 .cartIcon:hover {
   transform: scale(1.1);
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+ // margin-right: auto; // push menu items to the right
+}
+
+.logoImage {
+  height: 60px; // adjust size as needed
+  width: auto;
 }

@@ -6,7 +6,7 @@ import Contact from './pages/ContactUs'
 import About from './pages/AboutUs'
 import Login from './pages/LoginPage'
 import ProfilePage from "./pages/ProfilePage"; 
-import {Routes,Route  } from 'react-router-dom'
+import {Routes,Route , BrowserRouter } from 'react-router-dom'
 import Footer from './components/footer';
 import CustomDoor from './pages/CustomDoor';
 import CartPage from './pages/Cart';
@@ -19,6 +19,7 @@ function App() {
         <Navbar/>
         
       <div style={{ flex: 1 }}>
+    
       <Routes>
          <Route path="/" element={<Home />} /> {/* Default Route */}
          <Route path="/home" element={<Home />} />
@@ -29,6 +30,7 @@ function App() {
          <Route path="/cart" element={<CartPage/>}/>
          <Route path="/checkout" element={<CheckoutPage/>}/>
       </Routes>  
+     
       </div>
       <Footer/>
     </div>

@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import styles from "./index.module.scss"; // Import SCSS module
-import React from 'react';
+import { useState, useEffect } from 'react';
+import styles from "./index.module.scss"; 
+
 function Slider() {
   // State to track the current slide
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -26,6 +26,14 @@ function Slider() {
       prevIndex === 0 ? images.length - 1 : prevIndex - 1
     );
   };
+  
+    useEffect(() => {
+    const interval = setInterval(() => {
+      handleNext();
+    }, 3000);
+
+    return () => clearInterval(interval); // ✅ Clear on unmount
+  }, []);
 
   return (
     <div className={styles.sliderContainer}>

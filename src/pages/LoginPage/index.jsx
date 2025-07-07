@@ -54,6 +54,8 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styles from "./index.module.scss"; // Import SCSS module
 import { useUser } from "../../context/userContext";
+import { Eye, EyeOff } from "lucide-react";
+import { Helmet } from 'react-helmet';
 //import { getCountryCallingCode } from "libphonenumber-js";
 function LoginPage() {
 
@@ -64,12 +66,13 @@ function LoginPage() {
     password: "" ,
     });
 
-  const [userType, setUserType] = useState("customer");
+  const [userType, setUserType] = useState("Customer");
   const [signUpData,setsignUpData]=useState({
     firstName: "",
     lastName: "",
     phone: "",
     email:"",
+    gender:"",
     userType:userType,
     signupPassword: "", 
     confirmPassword: "",
@@ -81,7 +84,7 @@ function LoginPage() {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [showSignupPassword, setShowSignupPassword] = useState(false);
+  const [showSignUpPassword, setShowSignUpPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
 
@@ -116,7 +119,7 @@ function LoginPage() {
   const data = response.data; 
 
   if (data.success) {
-
+    console.log(data)
     const authRes = await axios.get("http://localhost:4000/api/auth", {
       withCredentials: true,
     });
@@ -161,12 +164,13 @@ function LoginPage() {
 
   if (!signUpData.firstName) newErrors.firstName = "First name is required";
   if (!signUpData.phone) newErrors.phone = "Phone number is required";
+  if (!signUpData.gender) newErrors.gender = "Gender is required";
   if (!signUpData.signupPassword) newErrors.signupPassword = "Password is required";
   if (signUpData.signupPassword !== signUpData.confirmPassword) {
     newErrors.confirmPassword = "Passwords do not match";
   }
 
-  if (userType === "business" && !signUpData.userType) {
+  if (userType === "Business" && !signUpData.userType) {
     newErrors.userType = "Business partner type is required";
   }
   console.log(signUpData.userType)
@@ -213,9 +217,9 @@ function LoginPage() {
 
   setsignUpData((prev) => ({
     ...prev,
-    userType: selectedType === "customer" ? "customer" : "", // clear if business
+    userType: selectedType === "Customer" ? "Customer" : "", // clear if Business
   }));
-  if(selectedType==="customer")
+  if(selectedType==="Customer")
   {
     setErrors((prevErrors) => ({
     ...prevErrors,
@@ -231,10 +235,13 @@ function LoginPage() {
 }, [user, navigate]);
 
   return (
-   
+   <>
+       <Helmet>
+                <title>Login | India Doors</title>
+       </Helmet>
     <div className={styles.page}>
-      
-       <div className={styles.formContainer}>
+       
+       <div className={styles.formContainer} style={{alignItems:'centre'}}>
           <form  className={`${styles.form} ${styles.login}`} onSubmit={handleLogin}>
             {/* Username Field */}
             <div className={styles.fieldContainer}>
@@ -255,21 +262,34 @@ function LoginPage() {
             
 
             {/* Password Field */}
-            <div className={styles.fieldContainer}>
+            <div className={styles.fieldContainer} style={{ position: "relative" }}>
 
               <label className={styles.label}>
                 Password <span className={styles.asterisk}>*</span>
               </label>
+              <div style={{position:'relative', display:'flex',alignItems:'center',width:'100%'}}>
               <input
                 placeholder="Enter Password"
                 type={showPassword ? "text" : "password"}
                 name="password"
                 className={styles.inputStyle}
                 onChange={handleLoginChange}
+                style={{ paddingRight: "40px" }}
               />
-               <button type="button" onClick={() => setShowPassword(prev => !prev)}>
-                {showPassword ? "Hide" : "Show"}
-              </button>
+                <span
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  style={{
+                    position: "absolute",
+                    right: "10px",
+                    cursor: "pointer",
+                    userSelect: "none",
+                    fontSize: "16px",
+                    color: "Black"
+                  }}
+                >
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </span>
+                </div>
               <p className={styles.error} style={{ minHeight: "16px", visibility: errors.password ? "visible" : "hidden" }}>
                    {errors.password || "⠀"} {/* Unicode space to keep height */}
                 </p>
@@ -292,7 +312,7 @@ function LoginPage() {
         
       </div>
 
-      <div className={styles.formContainer}>
+      <div className={styles.formContainer} style={{alignItems:'flex-start'}}>
         <div className={`${styles.door} ${isOpen ? styles.open : ''}`}>
           <img className={styles.doorImage} src="login_door.jpg" alt='door'/>
         </div>
@@ -304,8 +324,8 @@ function LoginPage() {
               <label>
                 <input
                   type="radio"
-                  value="customer"
-                  checked={userType === "customer"}
+                  value="Customer"
+                  checked={userType === "Customer"}
                   onChange={handleUserTypeChange}
                 />
                 Customer
@@ -313,34 +333,39 @@ function LoginPage() {
               <label >
                 <input
                   type="radio"
-                  value="business"
-                  checked={userType === "business"}
+                  value="Business"
+                  checked={userType === "Business"}
                   onChange={handleUserTypeChange}
                 />
                 Business Partner
               </label>
             </div>
 
-      {userType === "business" && (
-        <div className={styles.radioSelect}>
-            <label className={styles.label}>
-              User Type <span className={styles.asterisk}>*</span>
-            </label>
-            <select
-              name="userType"
-              className={styles.inputStyle}
-              
-              onChange={handleSignUpChange}        
-            >
-              <option value="">-- Select Role --</option>
-              <option value="retailer">Retailer</option>
-              <option value="carpenter">Carpenter</option>
-              <option value="interior-designer">Interior Designer</option>
-              <option value="builders">Builders</option>
-              
-            </select>
-            {errors.userType && <p className={styles.error}>{errors.userType}</p>}
-          </div>
+      {userType === "Business" && (
+        <div style={{width:'100%'}}>
+            <div className={styles.radioSelect}>
+                <label className={styles.label}>
+                  User Type <span className={styles.asterisk}>*</span>
+                </label>
+                <select
+                  name="userType"
+                  className={styles.inputStyle}
+                  
+                  onChange={handleSignUpChange}        
+                >
+                  <option value="">-- Select Role --</option>
+                  <option value="Retailer">Retailer</option>
+                  <option value="Carpenter">Carpenter</option>
+                  <option value="Interior Designer">Interior Designer</option>
+                  <option value="Builder">Builder</option>
+                  <option value="Other">Other</option>
+                </select>
+                
+            </div>
+             <p className={styles.error} style={{ minHeight: "16px", visibility: errors.userType ? "visible" : "hidden" }}>
+                   {errors.userType || "⠀"} {/* Unicode space to keep height */}
+            </p>
+        </div>
       )}
 
           {/* First Name */}
@@ -357,7 +382,7 @@ function LoginPage() {
             />
             <p className={styles.error} style={{ minHeight: "16px", visibility: errors.firstName ? "visible" : "hidden" }}>
                    {errors.firstName || "⠀"} {/* Unicode space to keep height */}
-                </p>
+            </p>
           </div>
           
 
@@ -375,8 +400,46 @@ function LoginPage() {
                    {errors.lastName || "⠀"} {/* Unicode space to keep height */}
                 </p>
           </div>
-          
 
+          <div style={{width:'100%'}}>
+           <div className={styles.radioSelect}>
+              <label>Gender: <span className={styles.asterisk}>*</span></label>
+              <label>
+                <input
+                  type="radio"
+                  value="Male"
+                  name="gender" 
+                  checked={signUpData.gender === "Male"}
+                  onChange={handleSignUpChange}
+                />
+                Male
+              </label>
+              <label >
+                <input
+                  type="radio"
+                  value="Female"
+                  name="gender" 
+                  checked={signUpData.gender === "Female"}
+                  onChange={handleSignUpChange}
+                />
+                Female
+              </label>
+              <label >
+                <input
+                  type="radio"
+                  value="Other"
+                  name="gender" 
+                  checked={signUpData.gender === "Other"}
+                  onChange={handleSignUpChange}
+                />
+                Other
+              </label>
+              
+             </div>
+                <p className={styles.error} style={{ minHeight: "16px", visibility: errors.gender ? "visible" : "hidden" }}>
+                   {errors.gender || "⠀"} {/* Unicode space to keep height */}
+                </p>
+            </div>
           {/* Phone Number */}
           <div className={styles.fieldContainerSignUp}>
             <label className={styles.label}>
@@ -386,6 +449,7 @@ function LoginPage() {
               placeholder="Enter Phone Number"
               type="tel"
               name="phone"
+                maxLength={15}
               className={styles.inputStyle}
               onChange={handleSignUpChange}
             />
@@ -431,17 +495,32 @@ function LoginPage() {
           </div> */}
 
           {/* Password */}
-          <div className={styles.fieldContainerSignUp}>
+          <div className={styles.fieldContainerSignUp} style={{position:"relative"}}>
             <label className={styles.label}>
               Password <span className={styles.asterisk}>*</span>
             </label>
+            <div style={{position:'relative', display:'flex',alignItems:'center',width:'100%'}}>
             <input
               placeholder="Enter Password"
-              type="password"
+               type={showSignUpPassword ? "text" : "password"}
               name="signupPassword"
               className={styles.inputStyle}
               onChange={handleSignUpChange}
             />
+              <span
+                    onClick={() => setShowSignUpPassword((prev) => !prev)}
+                    style={{
+                      position: "absolute",
+                      right: "10px", 
+                      cursor: "pointer",
+                      userSelect: "none",
+                      fontSize: "16px",
+                      color: "Black"
+                    }}
+                  >
+                    {showSignUpPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </span>
+              </div> 
             <p className={styles.error} style={{ minHeight: "16px", visibility: errors.signupPassword ? "visible" : "hidden" }}>
                    {errors.signupPassword || "⠀"} {/* Unicode space to keep height */}
                 </p>
@@ -474,7 +553,7 @@ function LoginPage() {
         </div>
       </div> 
     </div>
-         
+     </>    
   );
 }
 

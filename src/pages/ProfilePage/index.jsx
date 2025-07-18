@@ -22,7 +22,7 @@
    
 //     const fetchUser = async () => {
 //       try {
-//         const res = await axios.get("http://localhost:4000/api/auth", {
+//         const res = await axios.get("https://indiadoors.in/back/api/auth", {
 //           withCredentials: true, // ✅ includes HttpOnly cookie
 //         });
 
@@ -36,7 +36,7 @@
 //     };
 //     const fetchAddresses = async () => {
 //     try {
-//       const res = await axios.get("http://localhost:4000/user/addresses", {
+//       const res = await axios.get("https://indiadoors.in/back/user/addresses", {
 //         withCredentials: true,
 //       });
 //       setAddresses({
@@ -94,8 +94,8 @@
 //     };
 
 //     const url = mode === "edit"
-//       ? `http://localhost:4000/user/address/${addressId}`
-//       : "http://localhost:4000/user/address/add";
+//       ? `https://indiadoors.in/back/user/address/${addressId}`
+//       : "https://indiadoors.in/back/user/address/add";
 
 //     const method = mode === "edit" ? "put" : "post";
 
@@ -289,7 +289,7 @@ const ProfilePage = () => {
 
     const fetchProfileDetails = async () => {
       try {
-        const res = await axios.get("http://localhost:4000/user/info", {
+        const res = await axios.get("https://indiadoors.in/back/user/info", {
           withCredentials: true,
         });
         setUserDetails({
@@ -306,7 +306,7 @@ const ProfilePage = () => {
 
     const fetchUser = async () => {
       try {
-        const res = await axios.get("http://localhost:4000/api/auth", {
+        const res = await axios.get("https://indiadoors.in/back/api/auth", {
           withCredentials: true, // ✅ includes HttpOnly cookie
         });
 
@@ -320,7 +320,7 @@ const ProfilePage = () => {
     };
     const fetchAddresses = async () => {
     try {
-      const res = await axios.get("http://localhost:4000/user/addresses", {
+      const res = await axios.get("https://indiadoors.in/back/user/addresses", {
         withCredentials: true,
       });
       setAddresses({
@@ -453,7 +453,7 @@ const ProfilePage = () => {
           {selectedSection === 'profile' && userDetails && (
             <ProfileInfo userDetails={userDetails} />
           )}
-         {selectedSection === 'addresses' && <AddressForm />} 
+         {selectedSection === 'addresses' && <AddressForm header="Billing address" />} 
       </div>
         
       </>

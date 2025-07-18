@@ -13,7 +13,7 @@
 
 //   // Fetch dimensions from backend using Axios
 //   useEffect(() => {
-//     axios.get("http://localhost:4000/product/dimensions")
+//     axios.get("https://indiadoors.in/back/product/dimensions")
 //       .then((response) => {
 //         setWidthOptions(response.data.widthOptions);
 //         setHeightOptions(response.data.heightOptions);
@@ -120,7 +120,7 @@
 //   const [selectedHeight, setSelectedHeight] = useState(null);
 
 //   useEffect(() => {
-//   axios.get("http://localhost:4000/product/dimensions")
+//   axios.get("https://indiadoors.in/back/product/dimensions")
 //     .then((response) => {
 //       const widthOptions = response.data.map((row) => ({
 //         value: row.width_in,
@@ -339,7 +339,7 @@ const CustomDoor = () => {
 
 
  useEffect(() => {
-  axios.get("http://localhost:4000/product/dimensions")
+  axios.get("https://indiadoors.in/back/product/dimensions")
     .then((response) => {
       if (!response.data || !response.data.widthOptions || !response.data.heightOptions) {
         console.error("Unexpected API response format:", response.data);
@@ -373,7 +373,7 @@ const CustomDoor = () => {
     })
     .catch((error) => console.error("Error fetching dimensions:", error));
 
-    axios.get("http://localhost:4000/product/laminates")
+    axios.get("https://indiadoors.in/back/product/laminates")
     .then((response)=>{
       if (!response.data) {
         console.error("Unexpected API response format:", response.data);
@@ -390,7 +390,7 @@ const CustomDoor = () => {
     })
     .catch((error) => console.error("Error fetching laminates:", error))
 
-     axios.get("http://localhost:4000/product/carvings")
+     axios.get("https://indiadoors.in/back/product/carvings")
     .then((response)=>{
       if (!response.data) {
         console.error("Unexpected API response format:", response.data);
@@ -718,7 +718,7 @@ const CustomDoor = () => {
                   try {
                    
                       const res = await axios.post(
-                      `http://localhost:4000/user/cart/${action}`,
+                      `https://indiadoors.in/back/user/cart/${action}`,
                       newItem,
                       { withCredentials: true }
                     );

@@ -12,8 +12,8 @@ export const CartProvider = ({ children }) => {
 
     const fetchCart = async () => {
     try {
-      const res = await fetch('http://localhost:4000/user/cart/items', {
-        credentials: 'include', // required if using sessions/cookies
+      const res = await axios('https://indiadoors.in/back/user/cart/items', {
+        withCredentials: true, 
       });
 
       if (!res.ok) throw new Error("Failed to fetch cart");
@@ -43,7 +43,7 @@ export const CartProvider = ({ children }) => {
 
   const removeItem = async (index, itemId) => {
   try {
-    await axios.delete(`http://localhost:4000/user/cart/remove/${itemId}`, {
+    await axios.delete(`https://indiadoors.in/back/user/cart/remove/${itemId}`, {
       withCredentials: true,
     });
 
@@ -68,7 +68,7 @@ export const CartProvider = ({ children }) => {
   const checkout = async() => {
     try
     {
-        await axios.get("http://localhost:4000/api/auth", {
+        await axios.get("https://indiadoors.in/back/api/auth", {
         withCredentials: true, // ✅ includes HttpOnly cookie
         });
 
@@ -83,8 +83,6 @@ export const CartProvider = ({ children }) => {
       window.alert("Session expired! Login to continue");
       } 
     }
-    
-   
   };
 
   const clearCart=  () => {

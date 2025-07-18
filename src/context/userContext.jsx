@@ -13,7 +13,7 @@ export const UserProvider = ({ children }) => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get("http://localhost:4000/api/auth", {
+        const res = await axios.get("https://indiadoors.in/back/api/auth", {
           withCredentials: true, // ✅ includes HttpOnly cookie
         });
 

@@ -21,7 +21,7 @@ const CheckoutPage = () => {
  const handleCheckout = async () => {
   setLoading(true);
   try {
-    const res = await axios.post("http://localhost:4000/pay/checkout", {
+    const res = await axios.post("https://indiadoors.in/back/pay/checkout", {
       cartItems,
       totalAmount,
     }, { withCredentials: true });

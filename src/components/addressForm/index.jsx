@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import styles from './index.module.scss';
 import axios from 'axios';
 import { MdLocationOn,MdEdit } from 'react-icons/md';
-const AddressForm = ({ onSubmit }) => {
+const AddressForm = ({ onSubmit, header }) => {
   const [address, setAddress] = useState({
     addressLine: '',
     state: '',
@@ -25,7 +25,7 @@ const AddressForm = ({ onSubmit }) => {
   return (
     <form className={styles.addressForm} >
          <div className={styles.header}>
-          <h2><MdLocationOn /> Address</h2>
+          <h2><MdLocationOn /> {header}</h2>
            {!isEditing && (
           <MdEdit className={styles.editIcon} onClick={() => setIsEditing(true)} />
         )}

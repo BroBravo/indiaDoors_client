@@ -12,7 +12,9 @@
 //     setError(""); // Reset error message
 
 //     try {
+
 //       const response = await axios.post(`${baseURL}/login", {
+
 //         username,
 //         password,
 //       }, { withCredentials: true });
@@ -111,7 +113,9 @@ function LoginPage() {
   }
 
   try {
+
   const response = await axios.post(`${baseURL}/api/login`, loginPayload, {
+
     headers: { "Content-Type": "application/json" },
     withCredentials: true, 
   });
@@ -120,7 +124,9 @@ function LoginPage() {
 
   if (data.success) {
     console.log(data)
+
     const authRes = await axios.get(`${baseURL}/api/auth`, {
+
       withCredentials: true,
     });
     setUser(authRes.data);
@@ -186,7 +192,9 @@ function LoginPage() {
   }
   console.log(signupPayload.userType)
   try {
+
     const response = await fetch(`${baseURL}/api/signup`, {
+
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ...signupPayload}),

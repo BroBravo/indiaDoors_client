@@ -13,7 +13,9 @@ export const UserProvider = ({ children }) => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
+
         const res = await axios.get(`${baseURL}/api/auth`, {
+
           withCredentials: true, // ✅ includes HttpOnly cookie
         });
 

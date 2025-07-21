@@ -10,6 +10,7 @@ function Products(){
 
   useEffect(() => {
     axios
+
       .get(`${baseURL}/product/productList`) 
       .then((response) => {
         setProducts(response.data);

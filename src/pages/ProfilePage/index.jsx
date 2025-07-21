@@ -22,7 +22,9 @@
    
 //     const fetchUser = async () => {
 //       try {
+
 //         const res = await axios.get(`${baseURL}/api/auth", {
+
 //           withCredentials: true, // ✅ includes HttpOnly cookie
 //         });
 
@@ -36,7 +38,9 @@
 //     };
 //     const fetchAddresses = async () => {
 //     try {
+
 //       const res = await axios.get(`${baseURL}/user/addresses", {
+
 //         withCredentials: true,
 //       });
 //       setAddresses({
@@ -94,8 +98,10 @@
 //     };
 
 //     const url = mode === "edit"
-//       ? `http://localhost:4000/user/address/${addressId}`
+
+//       ? `${baseURL}/user/address/${addressId}`
 //       : `${baseURL}/user/address/add";
+
 
 //     const method = mode === "edit" ? "put" : "post";
 
@@ -290,7 +296,9 @@ const ProfilePage = () => {
 
     const fetchProfileDetails = async () => {
       try {
+
         const res = await axios.get(`${baseURL}/user/info`, {
+
           withCredentials: true,
         });
         setUserDetails({
@@ -307,7 +315,9 @@ const ProfilePage = () => {
 
     const fetchUser = async () => {
       try {
+
         const res = await axios.get(`${baseURL}/api/auth`, {
+
           withCredentials: true, // ✅ includes HttpOnly cookie
         });
 
@@ -321,7 +331,9 @@ const ProfilePage = () => {
     };
     const fetchAddresses = async () => {
     try {
+
       const res = await axios.get(`${baseURL}/user/addresses`, {
+
         withCredentials: true,
       });
       setAddresses({
@@ -454,7 +466,7 @@ const ProfilePage = () => {
           {selectedSection === 'profile' && userDetails && (
             <ProfileInfo userDetails={userDetails} />
           )}
-         {selectedSection === 'addresses' && <AddressForm />} 
+         {selectedSection === 'addresses' && <AddressForm header="Billing address" />} 
       </div>
         
       </>

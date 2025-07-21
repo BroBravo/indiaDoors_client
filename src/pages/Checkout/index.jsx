@@ -21,7 +21,9 @@ const CheckoutPage = () => {
  const handleCheckout = async () => {
   setLoading(true);
   try {
+
     const res = await axios.post(`${baseURL}/pay/checkout`, {
+
       cartItems,
       totalAmount,
     }, { withCredentials: true });

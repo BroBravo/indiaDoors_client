@@ -10,7 +10,7 @@ const CheckoutPage = () => {
   const { user } = useUser();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-
+  const baseURL = process.env.REACT_APP_BASE_URL;
   const formatCurrency = (num) => `₹${num.toFixed(2)}`;
 
   const totalAmount = cartItems.reduce((sum, item) => {
@@ -21,7 +21,7 @@ const CheckoutPage = () => {
  const handleCheckout = async () => {
   setLoading(true);
   try {
-    const res = await axios.post("http://localhost:4000/pay/checkout", {
+    const res = await axios.post(`${baseURL}/pay/checkout`, {
       cartItems,
       totalAmount,
     }, { withCredentials: true });

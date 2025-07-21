@@ -12,7 +12,7 @@
 //     setError(""); // Reset error message
 
 //     try {
-//       const response = await axios.post("http://localhost:4000/login", {
+//       const response = await axios.post(`${baseURL}/login", {
 //         username,
 //         password,
 //       }, { withCredentials: true });
@@ -58,7 +58,7 @@ import { Eye, EyeOff } from "lucide-react";
 import { Helmet } from 'react-helmet';
 //import { getCountryCallingCode } from "libphonenumber-js";
 function LoginPage() {
-
+  const baseURL = process.env.REACT_APP_BASE_URL;
   const {user,setUser}=useUser();
   const navigate = useNavigate(); // Initialize navigation
   const [loginData, setloginData] = useState({ 
@@ -111,7 +111,7 @@ function LoginPage() {
   }
 
   try {
-  const response = await axios.post("http://localhost:4000/api/login", loginPayload, {
+  const response = await axios.post(`${baseURL}/api/login`, loginPayload, {
     headers: { "Content-Type": "application/json" },
     withCredentials: true, 
   });
@@ -120,7 +120,7 @@ function LoginPage() {
 
   if (data.success) {
     console.log(data)
-    const authRes = await axios.get("http://localhost:4000/api/auth", {
+    const authRes = await axios.get(`${baseURL}/api/auth`, {
       withCredentials: true,
     });
     setUser(authRes.data);
@@ -186,7 +186,7 @@ function LoginPage() {
   }
   console.log(signupPayload.userType)
   try {
-    const response = await fetch("http://localhost:4000/api/signup", {
+    const response = await fetch(`${baseURL}/api/signup`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ...signupPayload}),

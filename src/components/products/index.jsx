@@ -3,14 +3,14 @@ import styles from "./index.module.scss"
 import axios from "axios";
 import { useEffect, useState } from "react";
 function Products(){
-
+  const baseURL = process.env.REACT_APP_BASE_URL;
   const [products, setProducts] = useState([]); // Store product data
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     axios
-      .get("http://localhost:4000/product/productList") 
+      .get(`${baseURL}/product/productList`) 
       .then((response) => {
         setProducts(response.data);
         setLoading(false);

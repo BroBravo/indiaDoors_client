@@ -29,9 +29,10 @@ function Navbar() {
   const location=useLocation();
   const { user, setUser } = useUser(); 
   const [menuOpen, setMenuOpen] = useState(false);
+  const baseURL = process.env.REACT_APP_BASE_URL;
  const handleLogout = async () => {
   try {
-    await axios.post('http://localhost:4000/api/logout',{},{ withCredentials: true }); // hit the backend to clear cookie
+    await axios.post(`${baseURL}/api/logout`,{},{ withCredentials: true }); // hit the backend to clear cookie
     setUser(null);
     navigate("/home");
   } catch (error) {
@@ -43,7 +44,7 @@ function Navbar() {
 //   if (!token) return; // No token, user is not logged in
 
 //   try {
-//     const response = await axios.get("http://localhost:4000/auth", {
+//     const response = await axios.get(`${baseURL}/auth", {
 //       headers: { Authorization: `Bearer ${token}` }, // Send token in request
 //     });
 

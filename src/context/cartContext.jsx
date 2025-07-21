@@ -6,13 +6,13 @@ const CartContext = createContext();
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
   
- 
+  const baseURL = process.env.REACT_APP_BASE_URL;
   const navigate=useNavigate();
   const { user, setUser } = useUser();
 
     const fetchCart = async () => {
     try {
-      const res = await fetch('http://localhost:4000/user/cart/items', {
+      const res = await fetch(`${baseURL}/user/cart/items`, {
         credentials: 'include', // required if using sessions/cookies
       });
 
@@ -68,7 +68,7 @@ export const CartProvider = ({ children }) => {
   const checkout = async() => {
     try
     {
-        await axios.get("http://localhost:4000/api/auth", {
+        await axios.get(`${baseURL}/api/auth`, {
         withCredentials: true, // ✅ includes HttpOnly cookie
         });
 

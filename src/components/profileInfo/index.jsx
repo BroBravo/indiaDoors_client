@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useState,useEffect } from 'react';
 import { useUser } from "../../context/userContext";
 const ProfileInfo = ({ userDetails }) => {
-
+   const baseURL = process.env.REACT_APP_BASE_URL;
    const [isEditing, setIsEditing] = useState(false);
    const [formData, setFormData] = useState(userDetails);
 

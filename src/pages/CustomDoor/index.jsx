@@ -13,7 +13,7 @@
 
 //   // Fetch dimensions from backend using Axios
 //   useEffect(() => {
-//     axios.get("http://localhost:4000/product/dimensions")
+//     axios.get(`${baseURL}/product/dimensions")
 //       .then((response) => {
 //         setWidthOptions(response.data.widthOptions);
 //         setHeightOptions(response.data.heightOptions);
@@ -120,7 +120,7 @@
 //   const [selectedHeight, setSelectedHeight] = useState(null);
 
 //   useEffect(() => {
-//   axios.get("http://localhost:4000/product/dimensions")
+//   axios.get(`${baseURL}/product/dimensions")
 //     .then((response) => {
 //       const widthOptions = response.data.map((row) => ({
 //         value: row.width_in,
@@ -293,7 +293,8 @@ const toInchesFromCM = (cm) => (cm / 2.54).toFixed(2);
 const toInchesFromMM = (mm) => (mm / 25.4).toFixed(2);
 
 const CustomDoor = () => {
-
+  
+  const baseURL = process.env.REACT_APP_BASE_URL;
   const [widthOptions, setWidthOptions] = useState([]);
   const [heightOptions, setHeightOptions] = useState([]);
   const [selectedWidth, setSelectedWidth] = useState(null);
@@ -339,7 +340,7 @@ const CustomDoor = () => {
 
 
  useEffect(() => {
-  axios.get("http://localhost:4000/product/dimensions")
+  axios.get(`${baseURL}/product/dimensions`)
     .then((response) => {
       if (!response.data || !response.data.widthOptions || !response.data.heightOptions) {
         console.error("Unexpected API response format:", response.data);
@@ -373,7 +374,7 @@ const CustomDoor = () => {
     })
     .catch((error) => console.error("Error fetching dimensions:", error));
 
-    axios.get("http://localhost:4000/product/laminates")
+    axios.get(`${baseURL}/product/laminates`)
     .then((response)=>{
       if (!response.data) {
         console.error("Unexpected API response format:", response.data);
@@ -390,7 +391,7 @@ const CustomDoor = () => {
     })
     .catch((error) => console.error("Error fetching laminates:", error))
 
-     axios.get("http://localhost:4000/product/carvings")
+     axios.get(`${baseURL}/product/carvings`)
     .then((response)=>{
       if (!response.data) {
         console.error("Unexpected API response format:", response.data);

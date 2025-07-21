@@ -6,14 +6,15 @@ const CartContext = createContext();
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
   
- 
+  const baseURL = process.env.REACT_APP_BASE_URL;
   const navigate=useNavigate();
   const { user, setUser } = useUser();
 
     const fetchCart = async () => {
     try {
-      const res = await axios('https://indiadoors.in/back/user/cart/items', {
-        withCredentials: true, 
+
+      const res = await axios(`${baseURL}/user/cart/items`, {
+         withCredentials: true,       
       });
 
       if (!res.ok) throw new Error("Failed to fetch cart");
@@ -68,7 +69,9 @@ export const CartProvider = ({ children }) => {
   const checkout = async() => {
     try
     {
-        await axios.get("https://indiadoors.in/back/api/auth", {
+
+        await axios.get(`${baseURL}/api/auth`, {
+
         withCredentials: true, // ✅ includes HttpOnly cookie
         });
 

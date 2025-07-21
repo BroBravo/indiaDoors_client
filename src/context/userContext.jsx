@@ -8,12 +8,14 @@ export const UserProvider = ({ children }) => {
   const location = useLocation();
   const [user, setUser] = useState(null); // will hold { username, identifier } or null
   const [loading, setLoading] = useState(true);
-
+  const baseURL = process.env.REACT_APP_BASE_URL;
   // Check if user is logged in on mount
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get("https://indiadoors.in/back/api/auth", {
+
+        const res = await axios.get(`${baseURL}/api/auth`, {
+
           withCredentials: true, // ✅ includes HttpOnly cookie
         });
 

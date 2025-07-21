@@ -22,7 +22,9 @@
    
 //     const fetchUser = async () => {
 //       try {
-//         const res = await axios.get("https://indiadoors.in/back/api/auth", {
+
+//         const res = await axios.get(`${baseURL}/api/auth", {
+
 //           withCredentials: true, // ✅ includes HttpOnly cookie
 //         });
 
@@ -36,7 +38,9 @@
 //     };
 //     const fetchAddresses = async () => {
 //     try {
-//       const res = await axios.get("https://indiadoors.in/back/user/addresses", {
+
+//       const res = await axios.get(`${baseURL}/user/addresses", {
+
 //         withCredentials: true,
 //       });
 //       setAddresses({
@@ -94,8 +98,10 @@
 //     };
 
 //     const url = mode === "edit"
-//       ? `https://indiadoors.in/back/user/address/${addressId}`
-//       : "https://indiadoors.in/back/user/address/add";
+
+//       ? `${baseURL}/user/address/${addressId}`
+//       : `${baseURL}/user/address/add";
+
 
 //     const method = mode === "edit" ? "put" : "post";
 
@@ -276,6 +282,7 @@ import AddressForm from "../../components/addressForm";
 import {Helmet} from "react-helmet";
 const ProfilePage = () => {
 
+    const baseURL = process.env.REACT_APP_BASE_URL;
     const navigate = useNavigate();
     const {user,setUser}=useUser();
     const [isAuthenticated, setIsAuthenticated] = useState(true); // Assume true, update based on actual auth check
@@ -289,7 +296,9 @@ const ProfilePage = () => {
 
     const fetchProfileDetails = async () => {
       try {
-        const res = await axios.get("https://indiadoors.in/back/user/info", {
+
+        const res = await axios.get(`${baseURL}/user/info`, {
+
           withCredentials: true,
         });
         setUserDetails({
@@ -306,7 +315,9 @@ const ProfilePage = () => {
 
     const fetchUser = async () => {
       try {
-        const res = await axios.get("https://indiadoors.in/back/api/auth", {
+
+        const res = await axios.get(`${baseURL}/api/auth`, {
+
           withCredentials: true, // ✅ includes HttpOnly cookie
         });
 
@@ -320,7 +331,9 @@ const ProfilePage = () => {
     };
     const fetchAddresses = async () => {
     try {
-      const res = await axios.get("https://indiadoors.in/back/user/addresses", {
+
+      const res = await axios.get(`${baseURL}/user/addresses`, {
+
         withCredentials: true,
       });
       setAddresses({

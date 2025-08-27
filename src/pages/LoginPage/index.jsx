@@ -1,4 +1,4 @@
-
+//require('dotenv').config();
 import { useState, useEffect } from 'react';
 //import DynamicForm from "../../components/form";
 import { useNavigate } from 'react-router-dom';
@@ -9,6 +9,9 @@ import { Eye, EyeOff } from "lucide-react";
 import { Helmet } from 'react-helmet';
 //import { getCountryCallingCode } from "libphonenumber-js";
 function LoginPage() {
+
+  //console.log("API URL:", process.env.REACT_APP_BASE_URL);
+
   const baseURL = process.env.REACT_APP_BASE_URL;
   const {user,setUser}=useUser();
   const navigate = useNavigate(); // Initialize navigation
@@ -125,7 +128,7 @@ useEffect(() => {
 
   if (!signUpData.firstName) newErrors.firstName = "First name is required";
   if (!signUpData.phone) newErrors.phone = "Phone number is required";
-  if (!signUpData.gender) newErrors.gender = "Gender is required";
+ // if (!signUpData.gender) newErrors.gender = "Gender is required";
   if (!signUpData.signupPassword) newErrors.signupPassword = "Password is required";
   if (signUpData.signupPassword !== signUpData.confirmPassword) {
     newErrors.confirmPassword = "Passwords do not match";

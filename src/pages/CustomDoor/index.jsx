@@ -264,7 +264,7 @@ import { useUser } from "../../context/userContext";
 import { Helmet } from "react-helmet";
 const CustomOption = (props) => {
   const { data, innerRef, innerProps } = props;
-
+  const baseURL = process.env.REACT_APP_BASE_URL;
   return (
     <div ref={innerRef} {...innerProps} className={styles.option}>
       <img src={data.image} alt={data.label} />
@@ -729,7 +729,7 @@ const CustomDoor = () => {
                   try {
                    
                       const res = await axios.post(
-                      `https://indiadoors.in/back/user/cart/${action}`,
+                      `${baseURL}/user/cart/${action}`,
                       newItem,
                       { withCredentials: true }
                     );

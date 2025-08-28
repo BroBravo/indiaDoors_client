@@ -9,9 +9,7 @@ function Products(){
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios
-
-      .get(`${baseURL}/product/productList`) 
+    axios.get(`${baseURL}/product/productList`) 
       .then((response) => {
         setProducts(response.data);
         setLoading(false);

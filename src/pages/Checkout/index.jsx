@@ -34,7 +34,7 @@ const CheckoutPage = () => {
       key: "rzp_test_3GEW4MGgYEd2PR", // ✅ Replace with Razorpay test key
       amount,
       currency,
-      name: "Your Door Shop",
+      name: "India Doors",
       description: "Custom Door Payment",
       order_id: orderId,
       handler: function (response) {

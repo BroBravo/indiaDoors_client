@@ -10,21 +10,18 @@ export const CartProvider = ({ children }) => {
   const navigate=useNavigate();
   const { user, setUser } = useUser();
 
-    const fetchCart = async () => {
-    try {
+   const fetchCart = async () => {
+  try {
+    const res = await axios.get(`${baseURL}/user/cart/items`, {
+      withCredentials: true,
+    });
 
-      const res = await axios(`${baseURL}/user/cart/items`, {
-         withCredentials: true,       
-      });
+    setCartItems(res.data);  // axios already gives parsed JSON
+  } catch (err) {
+    console.error("Fetch cart failed", err);
+  }
+};
 
-      if (!res.ok) throw new Error("Failed to fetch cart");
-
-      const data = await res.json();
-      setCartItems(data); // assumes each item includes `id`, `item_name`, etc.
-    } catch (err) {
-      console.error("Fetch cart failed", err);
-    }
-  };
 
   useEffect(() => {
     fetchCart();
@@ -44,21 +41,22 @@ export const CartProvider = ({ children }) => {
 
   const removeItem = async (index, itemId) => {
   try {
-    await axios.delete(`https://indiadoors.in/back/user/cart/remove/${itemId}`, {
+    await axios.delete(`${baseURL}/user/cart/remove/${itemId}`, {
       withCredentials: true,
     });
 
-    // setCartItems(prev => {
-    //   const newCart = [...prev];
-    //   newCart.splice(index, 1);
-    //   return newCart;
-    // });
+    setCartItems(prev => {
+      const newCart = [...prev];
+      newCart.splice(index, 1);
+      return newCart;
+    });
   } catch (err) {
   if (err.response?.data?.code === "TOKEN_EXPIRED" || err.response?.data?.code === "TOKEN_MISSING") {
     
     setUser(null);
     window.alert("Session expired! Login to continue");
   } else {
+    window.alert("Failed to remove");
     console.error("Failed to remove item:", err);
   }
 }

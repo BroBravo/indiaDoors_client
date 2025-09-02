@@ -40,25 +40,31 @@
 }
 
 .flipButton {
-  margin-top: 16px;
-  padding: 8px 16px;
-  border: none;
-  background-color: #106bcd;
-  color: white;
-  font-size: 16px;
-  border-radius: 4px;
+  padding: 0.5rem 0.9rem;
+  border-radius: 8px;
+  border: 1px solid #3b82f6;   /* blue-500 */
+  background: #ffffff;
+  color: #3b82f6;
+  font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color .2s ease, color .2s ease, box-shadow .2s ease;
+
+  &:hover { background: #e0e7ff; } /* light indigo */
 }
 
-.flipButton:hover {
-  background-color: #6396cd;
+.active {
+  background: #3b82f6;  /* active = darker */
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(59,130,246,.35);
+
+  &:hover { background: #2563eb; } /* blue-600 */
 }
+
 
 .buttonGroup {
-  display: flex;
-  gap: 12px;
-  margin-top: 16px;
+  display: inline-flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
 }
 
 .carvingOverlay {

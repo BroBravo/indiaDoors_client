@@ -8,6 +8,7 @@ const FlipDoor = ({ frontWrap, backWrap, frontCarving, backCarving, widthInInche
   const doorWidth = `${(widthInInches?widthInInches:36) * scaleFactor}vh`;
   const doorHeight = `${(heightInInches?heightInInches:72) * scaleFactor}vh`;
   
+
   return (
     <div className={styles.flipDoorContainer}>
       <div className={styles.doorWrapper} style={{ width: doorWidth, height: doorHeight }}>
@@ -98,18 +99,24 @@ const FlipDoor = ({ frontWrap, backWrap, frontCarving, backCarving, widthInInche
       </div>
       <div className={styles.buttonGroup}>
         <button
-          className={styles.flipButton}
+          type="button"
+          aria-pressed={!flipped}
+          className={`${styles.flipButton} ${!flipped ? styles.active : ""}`}
           onClick={() => setFlipped(false)}
         >
-          Show Front
+          Front
         </button>
+
         <button
-          className={styles.flipButton}
+          type="button"
+          aria-pressed={flipped}
+          className={`${styles.flipButton} ${flipped ? styles.active : ""}`}
           onClick={() => setFlipped(true)}
         >
-          Show Back
+          Back
         </button>
       </div>
+
     </div>
   );
 };

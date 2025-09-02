@@ -476,16 +476,18 @@ const CustomDoor = () => {
        <Helmet>
                 <title>Custom door | India Doors</title>
        </Helmet>
-    <div style={{display:"flex", flexDirection:"row"}}>
-       
-        <FlipDoor widthInInches={selectedWidth?.in?.value || 0}
-                  heightInInches={selectedHeight?.in?.value || 0}
-                  frontWrap={frontWrap?.value|| null}
-                  backWrap={backWrap?.value || null}
-                  frontCarving={frontCarving?.value || null}
-                  backCarving={backCarving?.value || null}
-                  >
-        </FlipDoor>
+    <div className={styles.page}>
+      <div className={styles.customDoorLayout}>
+        <div className={styles.previewPane}>
+          <FlipDoor
+            widthInInches={selectedWidth?.in?.value || 0}
+            heightInInches={selectedHeight?.in?.value || 0}
+            frontWrap={frontWrap?.value || null}
+            backWrap={backWrap?.value || null}
+            frontCarving={frontCarving?.value || null}
+            backCarving={backCarving?.value || null}
+          />
+        </div>
       <div className={styles.attributeContainer}>
         <div className={styles.wrapContainer}>
           <h2>Select Wrap</h2> 
@@ -753,7 +755,8 @@ const CustomDoor = () => {
 
             >Add to Cart</button>
           </div>      
-      </div>  
+       </div>  
+      </div> 
     </div>
     </>
   );

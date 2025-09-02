@@ -86,9 +86,28 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  const clearCart=  () => {
-    
-  };
+  const clearCart = async () => {
+  try {
+    // 1. Clear cart in backend
+    await axios.delete(`${baseURL}/user/cart/clear`, {
+      withCredentials: true,
+    });
+
+    // 2. Clear cart in frontend state
+    setCartItems([]);
+
+  } catch (err) {
+    if (err.response?.data?.code === "TOKEN_EXPIRED" || err.response?.data?.code === "TOKEN_MISSING") {
+      setUser(null);
+      window.alert("Session expired! Login to continue");
+    } else {
+      window.alert("Failed to clear cart");
+      console.error("Clear cart failed:", err);
+    }
+  }
+};
+
+
   return (
     <CartContext.Provider value={{ cartItems, addItem, updateQuantity, removeItem, checkout, clearCart }}>
       {children}

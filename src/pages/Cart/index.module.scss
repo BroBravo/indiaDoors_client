@@ -1,145 +1,360 @@
+// .container {
+//   max-width: 100vw;
+//   margin: 0 auto;
+//   padding: 2.5rem 1rem;
+//   background-color:rgb(248, 247, 247);
+//   h1 {
+//     font-size: 2rem;
+//     font-weight: 600;
+//     margin-bottom: 2rem;
+//   }
+// }
+
+// .emptyMessage {
+//   color: #6b7280; // Tailwind gray-500
+//   font-size: 1rem;
+// }
+
+// .cardList {
+//   display: flex;
+//   flex-direction: column;
+//   gap: 1.5rem;
+// }
+
+// .cartCard {
+//   display: flex;
+//   flex-direction: column;
+//   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+//   border-radius: 1vw;
+//   overflow: hidden;
+//   background-color: white;
+ 
+// }
+
+// .cardContent {
+//   padding: 1rem;
+//   display: flex;
+//   flex-direction: row;
+//   width: 90vw;
+//    height: 300px;
+//   align-items: center;
+//   @media (min-width: 768px) {
+//     flex-direction: row;
+//     justify-content: space-between;
+//     gap: 1rem;
+//   }
+// }
+
+// .itemImage {
+//   width: 10%; // or 20%, but px is safer
+//   height: 80%; // full height of the card
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   overflow: hidden;
+// }
+
+// .itemImage img {
+//   max-width: 100%;
+//   max-height: 100%;
+//   object-fit: cover;
+//   border-radius: 0.5rem;
+// }
+// .itemDetails {
+//   flex: 1;
+//   display: flex;
+//   flex-direction: column;
+//   h2 {
+//     font-size: 1.125rem;
+//     font-weight: 500;
+//   }
+
+//   p {
+//     font-size: 0.875rem;
+//     color: rgb(103, 95, 95);
+//     margin-top: 0.25rem;
+//   }
+// }
+
+// .actions {
+//   display: flex;
+//   flex-direction: column;
+//   align-items: flex-end;
+//   justify-content: space-between;
+//   height: 90% ;
+//   .qtyControl {
+//     display: flex;
+//     align-items: center;
+//     gap: 0.5rem;
+//     margin-bottom: 0.5rem;
+//   }
+
+//   .price {
+//     font-size: 1.125rem;
+//     font-weight: 600;
+//     text-align: right;
+//   }
+
+//   .removeBtn {
+//     margin-top: 0.5rem;
+//     color: #ef4444; // Tailwind red-500
+//     font-size: 0.875rem;
+//     cursor: pointer;
+//     display: flex;
+//     align-items: center;
+//     gap: 0.25rem;
+//     background-color: rgb(255, 255, 255);
+//     &:hover {
+//       text-decoration: underline;
+//     }
+//   }
+// }
+
+// .totalSection {
+//     text-align: right;
+//     margin-top: 2rem;
+//     align-items: flex-end;
+//     display: flex;
+//     flex-direction: column;
+
+//   .total {
+//     font-size: 1.25rem;
+//     font-weight: 600;
+//   }
+
+//   .checkoutBtn {
+//     display: flex;
+//     margin-top: 1rem;
+//     align-items: center;
+//     padding: 10px 20px;
+//     background-color: #e3671c;
+//     color: white;
+//     border: none;
+//     border-radius: 0;
+//     box-shadow: none;
+//     cursor: pointer;
+//   }
+//   .checkoutBtn:hover {
+   
+//     ArrowRightCircle{
+
+//     }
+
+//   }
+
+// }
+
 .container {
-  max-width: 100vw;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 2.5rem 1rem;
-  background-color:rgb(248, 247, 247);
+  padding: clamp(1rem, 2vw, 2.5rem) clamp(0.75rem, 2vw, 1.5rem);
+  background: #f8f7f7;
+
   h1 {
-    font-size: 2rem;
+    font-size: clamp(1.25rem, 1.6vw, 2rem);
     font-weight: 600;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
   }
 }
 
 .emptyMessage {
-  color: #6b7280; // Tailwind gray-500
+  color: #6b7280;
   font-size: 1rem;
+  padding: 1rem 0;
 }
 
 .cardList {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+
+  @media (min-width: 992px) {
+    gap: 1.25rem;
+  }
 }
 
 .cartCard {
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  border-radius: 1vw;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
   overflow: hidden;
-  background-color: white;
- 
 }
 
+/* Mobile-first grid layout */
 .cardContent {
-  padding: 1rem;
-  display: flex;
-  flex-direction: row;
-  width: 90vw;
-   height: 300px;
-  align-items: center;
+  display: grid;
+  grid-template-areas:
+    "img"
+    "details"
+    "actions";
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+  padding: 0.875rem;
+
+  /* Desktop: 3-column layout */
   @media (min-width: 768px) {
-    flex-direction: row;
-    justify-content: space-between;
+    grid-template-areas: "img details actions";
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
     gap: 1rem;
+    padding: 1rem;
+  }
+
+  @media (min-width: 1200px) {
+    gap: 1.25rem;
+    padding: 1.25rem;
   }
 }
 
 .itemImage {
-  width: 10%; // or 20%, but px is safer
-  height: 80%; // full height of the card
+  grid-area: img;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+
+  /* Keep image nicely sized on mobile */
+  width: 100%;
+  /* Give the image box a nice aspect ratio on small screens */
+  .imgBox {
+    width: 120px;
+    @media (min-width: 768px) { width: 140px; }
+  }
 }
 
 .itemImage img {
-  max-width: 100%;
-  max-height: 100%;
+  width: 120px;
+  height: auto;
+  aspect-ratio: 3/6; /* tall door look */
   object-fit: cover;
-  border-radius: 0.5rem;
+  border-radius: 8px;
+
+  @media (min-width: 768px) {
+    width: 140px;
+  }
 }
+
 .itemDetails {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+  grid-area: details;
+  display: grid;
+  gap: 0.25rem;
+
   h2 {
-    font-size: 1.125rem;
-    font-weight: 500;
+    font-size: clamp(1rem, 1.2vw, 1.125rem);
+    font-weight: 600;
+    line-height: 1.2;
   }
 
   p {
-    font-size: 0.875rem;
-    color: rgb(103, 95, 95);
-    margin-top: 0.25rem;
+    font-size: 0.9rem;
+    color: #675f5f;
+    margin-top: 0.1rem;
   }
 }
 
 .actions {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  justify-content: space-between;
-  height: 90% ;
+  grid-area: actions;
+  display: grid;
+  gap: 0.5rem;
+  justify-items: end;
+
+  @media (max-width: 767.98px) {
+    /* On mobile, align to start so buttons don’t cram right edge */
+    justify-items: start;
+  }
+
   .qtyControl {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+
+    span { font-weight: 600; }
   }
 
   .price {
-    font-size: 1.125rem;
-    font-weight: 600;
+    margin: 0.25rem 0 0.5rem;
+    display: grid;
+    gap: 0.25rem;
     text-align: right;
+
+    @media (max-width: 767.98px) {
+      text-align: left;
+    }
+  }
+
+  .priceLabel {
+    font-size: 0.95rem;
+    font-weight: 500;
+  }
+
+  .priceValue {
+    font-size: clamp(1rem, 1.2vw, 1.125rem);
+    font-weight: 700;
   }
 
   .removeBtn {
-    margin-top: 0.5rem;
-    color: #ef4444; // Tailwind red-500
-    font-size: 0.875rem;
-    cursor: pointer;
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 0.25rem;
-    background-color: rgb(255, 255, 255);
-    &:hover {
-      text-decoration: underline;
-    }
+    gap: 0.4rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    padding: 0.5rem 0.75rem;
+    border-radius: 10px;
+    color: #ef4444;
+
+    &:hover { background: #fafafa; }
   }
 }
 
+/* Total section:
+   – mobile: sticky footer bar
+   – desktop: normal block aligned right
+*/
 .totalSection {
+  margin-top: 1rem;
+
+  @media (max-width: 767.98px) {
+    position: sticky;
+    bottom: 0;
+    background: #ffffffcc;
+    backdrop-filter: blur(6px);
+    padding: 0.75rem;
+    border-radius: 12px 12px 0 0;
+    box-shadow: 0 -6px 20px rgba(0,0,0,0.06);
+  }
+
+  @media (min-width: 768px) {
     text-align: right;
-    margin-top: 2rem;
-    align-items: flex-end;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    justify-items: end;
+    gap: 0.5rem;
+    padding-top: 0.5rem;
+  }
 
   .total {
-    font-size: 1.25rem;
-    font-weight: 600;
+    font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+    font-weight: 700;
   }
 
   .checkoutBtn {
-    display: flex;
-    margin-top: 1rem;
+    display: inline-flex;
     align-items: center;
-    padding: 10px 20px;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    padding: 0.75rem 1rem;
     background-color: #e3671c;
-    color: white;
-    border: none;
-    border-radius: 0;
-    box-shadow: none;
+    color: #fff;
+    border: 0;
+    border-radius: 10px;
     cursor: pointer;
+    font-weight: 600;
+    line-height: 1;
+
+    &:hover { filter: brightness(0.95); }
   }
-  .checkoutBtn:hover {
-   
-    ArrowRightCircle{
-
-    }
-
-  }
-
 }
+
+/* Small polish */
+h1, h2, p, button { word-break: break-word; }

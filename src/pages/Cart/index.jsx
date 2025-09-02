@@ -73,15 +73,21 @@ useEffect(() => {
                     </button> */}
                   </div>
 
-                  <p className={styles.price}>Price:<br/>
-                    {formatCurrency(
-                      (+item.front_wrap_price +
-                        (+item.back_wrap_price || 0) +
-                        (+item.front_carving_price || 0) +
-                        (+item.back_carving_price || 0) +
-                        (baseWoodPrice*(item.width_in * item.height_in)/144)).toFixed(2) * item.quantity
-                    )}
+                  <p className={styles.price}>
+                    <span className={styles.priceLabel}>Price:</span>
+                    <span className={styles.priceValue}>
+                      {formatCurrency(
+                        (
+                          +item.front_wrap_price +
+                          (+item.back_wrap_price || 0) +
+                          (+item.front_carving_price || 0) +
+                          (+item.back_carving_price || 0) +
+                          (baseWoodPrice * (item.width_in * item.height_in) / 144)
+                        ) * item.quantity
+                      )}
+                    </span>
                   </p>
+
                   <button className={styles.removeBtn} style={{color:"#3b82f6"}} onClick={()=>{
                           const product=item;
                           console.log(product);

@@ -18,50 +18,114 @@ const CheckoutPage = () => {
     return sum + (+item.item_amount * qty);
   }, 0);
 
- const handleCheckout = async () => {
-  setLoading(true);
-  try {
+//  const handleCheckout = async () => {
+//   setLoading(true);
+//   try {
 
-    const res = await axios.post(`${baseURL}/pay/checkout`, {
+//     const res = await axios.post(`${baseURL}/pay/checkout`, {
 
-      cartItems,
-      totalAmount,
-    }, { withCredentials: true });
+//       cartItems,
+//       totalAmount,
+//     }, { withCredentials: true });
 
-    const { orderId, amount, currency } = res.data;
+//     const { orderId, amount, currency } = res.data;
 
-    const options = {
-      key: "rzp_test_3GEW4MGgYEd2PR", // ✅ Replace with Razorpay test key
-      amount,
-      currency,
-      name: "India Doors",
-      description: "Custom Door Payment",
-      order_id: orderId,
-      handler: function (response) {
-        alert("Payment successful!");
-        clearCart();
-        navigate("/order-success");
-        // ✅ Optionally send response.razorpay_payment_id to backend for verification
-      },
-      prefill: {
-        name: user?.username,
-        email: "test@example.com", // can be dynamic
-        contact: "9999999999"
-      },
-      theme: {
-        color: "#F37254"
-      }
-    };
+//     const options = {
+//       key: "rzp_test_3GEW4MGgYEd2PR", // ✅ Replace with Razorpay test key
+//       amount,
+//       currency,
+//       name: "India Doors",
+//       description: "Custom Door Payment",
+//       order_id: orderId,
+//       handler: function (response) {
+//         alert("Payment successful!");
+//         clearCart();
+//         navigate("/order-success");
+//         // ✅ Optionally send response.razorpay_payment_id to backend for verification
+//       },
+//       prefill: {
+//         name: user?.username,
+//         email: "test@example.com", // can be dynamic
+//         contact: "9999999999"
+//       },
+//       theme: {
+//         color: "#F37254"
+//       }
+//     };
 
-    const rzp = new window.Razorpay(options);
-    rzp.open();
-  } catch (err) {
-    console.error(err);
-    alert("Checkout failed");
-  } finally {
-    setLoading(false);
-  }
-};
+//     const rzp = new window.Razorpay(options);
+//     rzp.open();
+//   } catch (err) {
+//     console.error(err);
+//     alert("Checkout failed");
+//   } finally {
+//     setLoading(false);
+//   }
+// };
+
+const handleCheckout = async () => {
+    setLoading(true);
+    try {
+      await axios.post(`${baseURL}/user/cart/initiatePayment`, {}, { withCredentials: true });
+
+      // 1️⃣ Call backend to create order + payments entry + Razorpay order
+      const res = await axios.post(
+        `${baseURL}/pay/checkout`,
+        { cartItems, totalAmount },
+        { withCredentials: true }
+      );
+
+      const { orderId, amount, currency } = res.data;
+
+      // 2️⃣ Razorpay options
+      const options = {
+        key: process.env.REACT_APP_RAZORPAY_KEY, // use env key, not hardcoded
+        amount,
+        currency,
+        name: "India Doors",
+        description: "Custom Door Payment",
+        order_id: orderId, // Razorpay orderId (not our DB id)
+        handler: async function (response) {
+          try {
+            // 3️⃣ Verify payment on backend
+            await axios.post(
+              `${baseURL}/pay/verify`,
+              {
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+              },
+              { withCredentials: true }
+            );
+
+            alert("Payment successful!");
+            clearCart();
+            navigate("/home");
+          } catch (err) {
+            console.error("Verification failed", err);
+            alert("Payment verification failed!");
+          }
+        },
+        prefill: {
+          name: user?.username || "Guest",
+          email: user?.email || "test@example.com",
+          contact: "9999999999",
+        },
+        theme: {
+          color: "#3b82f6",
+        },
+      };
+
+      // 4️⃣ Open Razorpay Checkout
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+    } catch (err) {
+      console.error("Checkout failed", err);
+      alert("Checkout failed. Try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
 
   return (

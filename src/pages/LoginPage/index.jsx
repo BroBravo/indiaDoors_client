@@ -88,7 +88,7 @@ useEffect(() => {
       withCredentials: true,
     });
     setUser(authRes.data);
-    alert("Login successful!");
+    //alert("Login successful!");
     navigate("/home");
    // window.location.reload();
   } else {

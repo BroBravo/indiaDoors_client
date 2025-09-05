@@ -1,88 +1,84 @@
 .card {
-  width: 20%;
-  max-height: fit-content;
-  object-fit: contain;
-  //border-radius: 1rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  background: white;
-  padding: 1rem;
+  display: flex;
+  flex-direction: column;
   border: 1px solid #e5e7eb;
-  margin-left: 1vw;
-  margin-right: 1vw;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,.06);
+  overflow: hidden;
+  transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+  cursor: pointer;
+
   &:hover {
-    cursor: pointer;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0,0,0,.08);
+    border-color: #ddd;
   }
 }
 
+.imageWrap {
+  width: 100%;
+  background: #fafafa;
+  display: grid;
+  place-items: center;
+}
 
+/* Keep images neat: full width, fixed aspect ratio */
 .cardImage {
-  width: 40%;
-  height: 12rem;
+  width: 100%;
+  aspect-ratio: 3 / 5;       /* tall door frame */
   object-fit: cover;
+  display: block;
 }
 
 .cardContent {
-  margin-top: 1rem;
+  padding: 0.75rem;
+  display: grid;
+  gap: 0.35rem;
 }
 
 .cardTitle {
-  font-size: 1.125rem;
-  font-weight: bold;
+  font-size: clamp(0.95rem, 1.4vw, 1.1rem);
+  font-weight: 700;
+  line-height: 1.2;
 }
 
 .priceContainer {
-  display: flex;
-  align-items: center;
+  display: inline-flex;
+  align-items: baseline;
   gap: 0.5rem;
-  color: gray;
+  color: #6b7280;
 }
 
 .mrp {
   text-decoration: line-through;
-  color: #6b7280;
+  color: #9ca3af;
+  font-size: 0.9rem;
 }
 
 .price {
-  font-size: 1.125rem;
-  font-weight: bold;
+  font-size: clamp(1rem, 1.6vw, 1.125rem);
+  font-weight: 800;
   color: #dc2626;
 }
 
 .buttonGroup {
-  display: flex;
+  display: grid;
+  grid-auto-flow: column;
   gap: 0.5rem;
-  margin-top: 0.75rem;
+  margin-top: 0.5rem;
 }
 
 .cartButton,
 .buyButton {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
   padding: 0.5rem;
-  border: none;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  transition: background 0.3s;
+  border: 0;
+  border-radius: 8px;
+  font-weight: 600;
 }
 
-.cartButton {
-  background: black;
-  color: white;
-}
+.cartButton { background: #111; color: #fff; }
+.cartButton:hover { filter: brightness(.95); }
+.buyButton { background: #dc2626; color: #fff; }
+.buyButton:hover { filter: brightness(.95); }
 
-.cartButton:hover {
-  background: #333;
-}
-
-.buyButton {
-  background: #dc2626;
-  color: white;
-}
-
-.buyButton:hover {
-  background: #b91c1c;
-}

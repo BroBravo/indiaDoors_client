@@ -1,9 +1,22 @@
-.section{
-    width: 100vw;
-    min-height: 100vh;
-    display: flex;
-    background-color: white;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: flex-start;
+.productsSection {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: clamp(0.75rem, 2.5vw, 1.5rem);
+  background: #fff;
+}
+
+.stateText { padding: 1rem; text-align: center; }
+
+/* Responsive grid: auto-fit fills the row with min card width */
+.grid {
+  display: grid;
+  gap: clamp(0.75rem, 2vw, 1rem);
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+
+  @media (min-width: 480px) {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
 }

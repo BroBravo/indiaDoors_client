@@ -1,3 +1,31 @@
+/* ====== CONTAINER ====== */
+.productsSection {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: clamp(0.75rem, 2.5vw, 1.5rem);
+  background: #fff;
+}
+
+.stateText { padding: 1rem; text-align: center; }
+
+/* ====== GRID: 2 / 3 / 4 columns ====== */
+.grid {
+  display: grid;
+  gap: clamp(0.75rem, 2vw, 1rem);
+  grid-template-columns: repeat(2, minmax(0, 1fr));   /* phones */
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(3, minmax(0, 1fr)); /* tablets */
+  }
+  @media (min-width: 1200px) {
+    grid-template-columns: repeat(4, minmax(0, 1fr)); /* desktop */
+  }
+
+  /* prevent child overflow forcing a single column */
+  > * { min-width: 0; }
+}
+
+/* ====== CARD (compact, but never hides content) ====== */
 .card {
   display: flex;
   flex-direction: column;
@@ -8,65 +36,69 @@
   overflow: hidden;
   transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
   cursor: pointer;
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(0,0,0,.08);
-    border-color: #ddd;
-  }
+  height: auto;         /* ✅ DO NOT cap height; let content show */
 }
 
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0,0,0,.08);
+  border-color: #ddd;
+}
+
+/* ====== IMAGE AREA (fixed responsive height) ====== */
 .imageWrap {
   width: 100%;
   background: #fafafa;
-  display: grid;
-  place-items: center;
 }
 
-/* Keep images neat: full width, fixed aspect ratio */
+/* use a responsive fixed height instead of tall aspect ratio */
 .cardImage {
   width: 100%;
-  aspect-ratio: 3 / 5;       /* tall door frame */
+  height: clamp(140px, 22vw, 220px);  /* ✅ compact on phone, ~220px on desktop */
   object-fit: cover;
   display: block;
 }
 
+/* ====== CONTENT ====== */
 .cardContent {
-  padding: 0.75rem;
+  padding: 0.6rem;
   display: grid;
   gap: 0.35rem;
 }
 
 .cardTitle {
-  font-size: clamp(0.95rem, 1.4vw, 1.1rem);
+  font-size: clamp(0.9rem, 1.2vw, 1.05rem);
   font-weight: 700;
   line-height: 1.2;
+  text-align: center;
 }
 
 .priceContainer {
-  display: inline-flex;
+  display: flex;
+  justify-content: center;
   align-items: baseline;
-  gap: 0.5rem;
+  gap: 0.45rem;
   color: #6b7280;
 }
 
 .mrp {
   text-decoration: line-through;
   color: #9ca3af;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
 }
 
 .price {
-  font-size: clamp(1rem, 1.6vw, 1.125rem);
+  font-size: clamp(0.95rem, 1.4vw, 1.1rem);
   font-weight: 800;
   color: #dc2626;
 }
 
+/* (optional) buttons if you re-enable later */
 .buttonGroup {
   display: grid;
   grid-auto-flow: column;
   gap: 0.5rem;
-  margin-top: 0.5rem;
+  margin-top: 0.4rem;
 }
 
 .cartButton,
@@ -81,4 +113,3 @@
 .cartButton:hover { filter: brightness(.95); }
 .buyButton { background: #dc2626; color: #fff; }
 .buyButton:hover { filter: brightness(.95); }
-

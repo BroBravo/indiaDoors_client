@@ -88,15 +88,20 @@ useEffect(() => {
       withCredentials: true,
     });
     setUser(authRes.data);
-    //alert("Login successful!");
     navigate("/home");
-   // window.location.reload();
+  
   } else {
-    alert(data.message || "Invalid credentials");
+    alert(data?.message || "Login failed.");
   }
-  } catch (error) {
-    console.error("Error:", error);
-    alert("Server unable to respond");
+  }  catch (err) {
+    
+    if (err.response) {
+      alert(err.response.data?.message || `Login failed (${err.response.status})`);
+    } else if (err.request) {
+      alert("No response from server. Check your network.");
+    } else {
+      alert("Unexpected error. Please try again.");
+    }
   }
  };
   const handleLoginChange = (e) => {

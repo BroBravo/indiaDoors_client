@@ -1,0 +1,232 @@
+// .addressSection {
+//   margin-top: 1rem;
+//   padding: 1rem;
+//   border: 1px solid #eee;
+//   border-radius: 12px;
+//   background: #fafafa;
+
+//   h2 {
+//     margin: 0 0 0.5rem 0;
+//     font-size: 1.2rem;
+//   }
+// }
+
+// .radioGroup {
+//   display: flex;
+//   gap: 1rem;
+//   flex-wrap: wrap;
+//   margin: 0.5rem 0 0.75rem 0;
+// }
+
+// .radioItem {
+//   display: inline-flex;
+//   align-items: center;
+//   gap: 0.4rem;
+//   padding: 0.4rem 0.6rem;
+//   background: #fff;
+//   border: 1px solid #e8e8e8;
+//   border-radius: 999px;
+// }
+
+// .block {
+//   margin-top: 0.75rem;
+//   padding: 0.75rem;
+//   background: #fff;
+//   border: 1px solid #eee;
+//   border-radius: 10px;
+
+//   h4 {
+//     margin: 0 0 0.5rem 0;
+//   }
+// }
+
+// .noSaved {
+//   font-size: 0.95rem;
+//   background: #fff4d6;
+//   border: 1px solid #ffe2a6;
+//   color: #5a4300;
+//   padding: 0.5rem 0.75rem;
+//   border-radius: 8px;
+//   margin-bottom: 0.6rem;
+// }
+
+// .skeleton {
+//   padding: 0.75rem 0.5rem;
+//   opacity: 0.7;
+// }
+
+// .addrForm {
+//   display: grid;
+//   gap: 0.6rem;
+
+//   .row {
+//     display: flex;
+//     flex-direction: column;
+//     gap: 0.25rem;
+
+//     label {
+//       font-size: 0.9rem;
+//       color: #333;
+//     }
+
+//     input {
+//       padding: 0.55rem 0.7rem;
+//       border: 1px solid #ddd;
+//       border-radius: 8px;
+//       background: #fff;
+
+//       &:disabled {
+//         background: #f5f5f5;
+//         color: #666;
+//         cursor: not-allowed;
+//       }
+//     }
+//   }
+
+//   .grid2 {
+//     display: grid;
+//     gap: 0.6rem;
+//     grid-template-columns: 1fr 1fr;
+//   }
+// }
+
+// .error {
+//   margin-top: 0.4rem;
+//   color: #b00020;
+//   font-size: 0.9rem;
+// }
+/* src/components/address/address.module.scss */
+
+/* Brand color carried over from your contact form button/border */
+$brand: rgba(84, 43, 5, 0.919);
+
+.addressSection {
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  background: #fafafa;
+
+  h2 {
+    margin: 0 0 0.75rem 0;
+    font-size: 1.2rem;
+    color: $brand;
+    font-weight: 700;
+  }
+}
+
+.noSaved {
+  font-size: 0.95rem;
+  background: #fff4d6;
+  border: 1px solid #ffe2a6;
+  color: #5a4300;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  margin-bottom: 0.6rem;
+}
+
+.radioGroup {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin: 0.5rem 0 0.75rem 0;
+}
+
+.radioItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.7rem;
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  border-radius: 999px;
+  cursor: pointer;
+
+  input {
+    accent-color: $brand;
+  }
+}
+
+.block {
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 10px;
+
+  h4 {
+    margin: 0 0 0.5rem 0;
+    color: #050e20;
+  }
+}
+
+/* === CONTACT-FORM STYLE CLONE === */
+.error{
+    color: red;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  grid-template-columns: 1fr 1fr; /* same 2-col grid */
+  gap: 1rem;
+
+  input,
+  textarea {
+    padding: 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 1rem;
+    width: 90%;
+    background-color: #fff;
+    color: #333;
+
+    &:focus {
+      outline: none;
+      border-color: $brand;
+      box-shadow: 0 0 0 2px rgba(84, 43, 5, 0.12);
+    }
+
+    &:disabled {
+      background: #f5f5f5;
+      color: #666;
+      cursor: not-allowed;
+    }
+  }
+.field{
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    align-items: flex-start;
+}
+ 
+
+  /* helper class to span both columns (like your textarea) */
+  :global(.span2) {
+    grid-column: span 2;
+  }
+}
+
+/* read-only visual to mirror disabled feel across whole form */
+.readonly {
+  pointer-events: none;
+
+  input,
+  textarea {
+    background: #f5f5f5 !important;
+    color: #666 !important;
+    border-color: #e5e7eb !important;
+  }
+}
+
+/* small screens: stack into one column like your contact form would */
+@media (max-width: 640px) {
+  .form {
+    grid-template-columns: 1fr;
+
+    :global(.span2) {
+      grid-column: span 1;
+    }
+  }
+}

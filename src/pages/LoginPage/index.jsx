@@ -210,7 +210,7 @@ useEffect(() => {
        <Helmet>
                 <title>Login | India Doors</title>
        </Helmet>  
-       <div style={{display:"flex", flexDirection:"row"}}>
+  {/* <div style={{display:"flex", flexDirection:"row"}}> */}
     <div className={styles.page}>
           
       <div className={styles.toggleSwitchContainer}>
@@ -853,7 +853,7 @@ useEffect(() => {
        </div>
       )}
     </div>
-    </div>
+    {/* </div> */}
      </>    
   );
 }

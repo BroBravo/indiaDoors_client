@@ -7,8 +7,8 @@ const FlipDoor = ({ frontWrap, backWrap, frontCarving, backCarving, widthInInche
   const scaleFactor = .8; // 1 inch = .8vh
   const doorWidth = `${(widthInInches?widthInInches:30) * scaleFactor}vh`;
   const doorHeight = `${(heightInInches?heightInInches:80) * scaleFactor}vh`;
-  const lamHeight = `${80 * scaleFactor}vh`;
-  const lamWidth = `${30 * scaleFactor}vh`;
+  const lamHeight = `${96 * scaleFactor}vh`;
+  const lamWidth = `${48 * scaleFactor}vh`;
   return (
     <div className={styles.flipDoorContainer}>
       <div className={styles.doorWrapper} style={{ width: doorWidth, height: doorHeight }}>

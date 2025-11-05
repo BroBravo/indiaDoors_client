@@ -9,6 +9,7 @@ const FlipDoor = ({ frontWrap, backWrap, frontCarving, backCarving, widthInInche
   const doorHeight = `${(heightInInches?heightInInches:80) * scaleFactor}vh`;
   const lamHeight = `${96 * scaleFactor}vh`;
   const lamWidth = `${48 * scaleFactor}vh`;
+  const baseURL = process.env.REACT_APP_BASE_URL;
   return (
     <div className={styles.flipDoorContainer}>
       <div className={styles.doorWrapper} style={{ width: doorWidth, height: doorHeight }}>
@@ -20,7 +21,7 @@ const FlipDoor = ({ frontWrap, backWrap, frontCarving, backCarving, widthInInche
         >
           {/* Front Image */}
           <img
-            src={frontWrap?frontWrap:'Laminates/Lam-1.png'}
+            src={frontWrap?`${baseURL}/${frontWrap}`:'Laminates/Lam-1.png'}
             alt="Front of door"
             className={`${styles.doorFace} ${styles.front}`}
             style={{ width: lamWidth, height: lamHeight }}
@@ -29,7 +30,7 @@ const FlipDoor = ({ frontWrap, backWrap, frontCarving, backCarving, widthInInche
 
           {/* Back Image */}
           <img
-            src={backWrap?backWrap:'Laminates/Lam-2.png'}
+            src={backWrap?`${baseURL}/${backWrap}`:'Laminates/Lam-2.png'}
             alt="Back of door"
             className={`${styles.doorFace} ${styles.back}`}
             style={{ width: lamWidth, height: lamHeight }}

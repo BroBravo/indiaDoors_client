@@ -17,8 +17,9 @@
   position: sticky;
   width: 100%;
   z-index: 3;
-  border-bottom: 3px solid rgba(84, 43, 5, 0.919);
+  // border-bottom: 3px solid rgba(84, 43, 5, 0.919);
 //  padding: 1vh 2vw;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   flex-wrap: wrap;
 }
 

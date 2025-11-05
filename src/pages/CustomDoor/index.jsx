@@ -267,7 +267,7 @@ const CustomOption = (props) => {
   const baseURL = process.env.REACT_APP_BASE_URL;
   return (
     <div ref={innerRef} {...innerProps} className={styles.option}>
-      <img src={data.image} alt={data.label} />
+      <img src={`${baseURL}/${data.image}`} alt={data.label} />
       <div className={styles.details}>
         <div className={styles.label}>{data.label}</div>
         <div className={styles.price}>₹{data.price}</div>
@@ -278,10 +278,11 @@ const CustomOption = (props) => {
 
 const CustomSingleValue = (props) => {
   const { data } = props;
+  const baseURL = process.env.REACT_APP_BASE_URL;
   return (
     <components.SingleValue {...props}>
       <div className={styles.singleValue}>
-        <img src={data.image} alt={data.label} />
+        <img src={`${baseURL}/${data.image}`} alt={data.label} />
         <span className={styles.label}>{data.label}</span>
         <span className={styles.price}>(₹{data.price})</span>
       </div>

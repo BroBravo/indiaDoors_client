@@ -7,19 +7,19 @@ import { useUser } from "../../context/userContext";
 import { MenuIcon, MenuSquare, ListCollapse, List} from 'lucide-react';
 const menuItems = [
   {
-    label: "HOME",
+    label: "Home",
     to: "/",
   },
   {
-    label: "ABOUT US",
+    label: "About Us",
     to: "/about-us#about",
   },
   {
-    label: "CONTACT US",
+    label: "Contact Us",
     to: "/about-us#contact",
   },
   {
-    label: "CUSTOMIZE DOOR",
+    label: "Custom Door",
     to: "/custom-door",
   },
 ];

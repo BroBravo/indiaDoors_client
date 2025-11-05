@@ -5,12 +5,12 @@ import { useNavigate } from "react-router-dom";
 const ProductCard = ({ product }) => {
   const navigate = useNavigate();
   const handleNavigate = () => navigate("/custom-door", { state: { product } });
-
+  const baseURL = process.env.REACT_APP_BASE_URL;
   return (
     <article className={styles.card} onClick={handleNavigate}>
       <div className={styles.imageWrap}>
         <img
-          src={product.front_wrap}
+          src={`${baseURL}/${product.front_wrap}`}
           alt={product.name}
           className={styles.cardImage}
           loading="lazy"

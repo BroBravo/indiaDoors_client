@@ -8,6 +8,56 @@ import { useUser } from "../../context/userContext";
 import { Eye, EyeOff } from "lucide-react";
 import { Helmet } from 'react-helmet';
 //import { getCountryCallingCode } from "libphonenumber-js";
+
+// ---------- RSA-OAEP helpers (WebCrypto) ----------
+
+function pemToArrayBuffer(pem) {
+  const b64 = pem
+    .replace(/-----BEGIN PUBLIC KEY-----/g, "")
+    .replace(/-----END PUBLIC KEY-----/g, "")
+    .replace(/\s+/g, "");
+  const raw = atob(b64);
+  const buffer = new ArrayBuffer(raw.length);
+  const view = new Uint8Array(buffer);
+  for (let i = 0; i < raw.length; i++) {
+    view[i] = raw.charCodeAt(i);
+  }
+  return buffer;
+}
+
+function arrayBufferToBase64(buffer) {
+  const bytes = new Uint8Array(buffer);
+  let binary = "";
+  for (let i = 0; i < bytes.byteLength; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  return btoa(binary);
+}
+
+async function encryptWithPublicKey(pemPublicKey, plaintext) {
+  const keyData = pemToArrayBuffer(pemPublicKey);
+
+  const key = await window.crypto.subtle.importKey(
+    "spki",
+    keyData,
+    { name: "RSA-OAEP", hash: "SHA-256" },
+    false,
+    ["encrypt"]
+  );
+
+  const encoder = new TextEncoder();
+  const encoded = encoder.encode(plaintext);
+
+  const ciphertext = await window.crypto.subtle.encrypt(
+    { name: "RSA-OAEP" },
+    key,
+    encoded
+  );
+
+  return arrayBufferToBase64(ciphertext);
+}
+
+
 function LoginPage() {
 
   //console.log("API URL:", process.env.REACT_APP_BASE_URL);
@@ -40,61 +90,100 @@ function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showSignUpPassword, setShowSignUpPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
+  const [publicKey, setPublicKey] = useState("");     
+  const [loadingKey, setLoadingKey] = useState(true); 
 
   const isPhone = (value) => /^\+?\d{10,15}$/.test(value);
   const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 820);
 
-useEffect(() => {
-  const handleResize = () => setIsMobile(window.innerWidth <= 820);
-  window.addEventListener("resize", handleResize);
-  return () => window.removeEventListener("resize", handleResize);
-}, []);
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 820);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
+  const fetchKey = async () => {
+    try {
+      const res = await axios.get(`${baseURL}/api/public-key`, {
+        withCredentials: true,
+      });
+      setPublicKey(res.data.publicKey);
+    } catch (err) {
+      console.error("Failed to fetch public key", err);
+      alert("Cannot load security keys. Please try again later.");
+    } finally {
+      setLoadingKey(false);
+    }
+  };
+
+  fetchKey();
+}, [baseURL]);
+
+
  const handleLogin = async (e) => {
   e.preventDefault();
-  setErrors({}); // Reset errors before validation
+  setErrors({}); // Reset errors
 
   let newErrors = {};
 
   if (!loginData.username) newErrors.username = "Username is required";
   if (!loginData.password) newErrors.password = "Password is required";
 
-  // If errors exist, update the state and stop form submission
   if (Object.keys(newErrors).length > 0) {
     setErrors(newErrors);
     return;
   }
+
+  if (loadingKey) {
+    alert("Security keys are still loading. Please wait a moment.");
+    return;
+  }
+  if (!publicKey) {
+    alert("Encryption key not available. Contact support.");
+    return;
+  }
+
+  // Normalize phone format
   let loginPayload = { ...loginData };
-  if (isPhone(loginPayload.username) && !loginPayload.username.startsWith('+91')) {
+  if (isPhone(loginPayload.username) && !loginPayload.username.startsWith("+91")) {
     loginPayload.username = "+91" + loginPayload.username;
   }
 
   try {
+    setLoading(true);
 
-  const response = await axios.post(`${baseURL}/api/login`, loginPayload, {
-
-    headers: { "Content-Type": "application/json" },
-    withCredentials: true, 
-  });
-
-  const data = response.data; 
-
-  if (data.success) {
-    console.log(data)
-
-    const authRes = await axios.get(`${baseURL}/api/auth`, {
-
-      withCredentials: true,
+    // 🔐 Encrypt login payload
+    const plaintext = JSON.stringify({
+      username: loginPayload.username,
+      password: loginPayload.password,
     });
-    setUser(authRes.data);
-    navigate("/home");
-  
-  } else {
-    alert(data?.message || "Login failed.");
-  }
-  }  catch (err) {
-    
+
+    const encrypted = await encryptWithPublicKey(publicKey, plaintext);
+
+    const response = await axios.post(
+      `${baseURL}/api/login`,
+      { encrypted },                         // 👈 only encrypted payload
+      {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      }
+    );
+
+    const data = response.data;
+
+    if (data.success) {
+      const authRes = await axios.get(`${baseURL}/api/auth`, {
+        withCredentials: true,
+      });
+      setUser(authRes.data);
+      navigate("/home");
+    } else {
+      alert(data?.message || "Login failed.");
+    }
+  } catch (err) {
+    console.error(err);
     if (err.response) {
       alert(err.response.data?.message || `Login failed (${err.response.status})`);
     } else if (err.request) {
@@ -102,8 +191,12 @@ useEffect(() => {
     } else {
       alert("Unexpected error. Please try again.");
     }
+  } finally {
+    setLoading(false);
   }
- };
+};
+
+
   const handleLoginChange = (e) => {
     setloginData((prev) => ({
     ...prev,
@@ -133,7 +226,6 @@ useEffect(() => {
 
   if (!signUpData.firstName) newErrors.firstName = "First name is required";
   if (!signUpData.phone) newErrors.phone = "Phone number is required";
- // if (!signUpData.gender) newErrors.gender = "Gender is required";
   if (!signUpData.signupPassword) newErrors.signupPassword = "Password is required";
   if (signUpData.signupPassword !== signUpData.confirmPassword) {
     newErrors.confirmPassword = "Passwords do not match";
@@ -142,32 +234,55 @@ useEffect(() => {
   if (userType === "Business" && !signUpData.userType) {
     newErrors.userType = "Business partner type is required";
   }
-  console.log(signUpData.userType)
 
   if (Object.keys(newErrors).length > 0) {
     setErrors(newErrors);
     return;
   }
-   
-  let signupPayload = { ...signUpData };
-  if (isPhone(signUpData.phone)) {
-    signupPayload.phone = "+91" + signupPayload.phone;
+
+  if (loadingKey) {
+    alert("Security keys are still loading. Please wait a moment.");
+    return;
   }
-  console.log(signupPayload.userType)
+  if (!publicKey) {
+    alert("Encryption key not available. Contact support.");
+    return;
+  }
+
+  // Prepare signup payload (normalize phone, userType, etc.)
+  let signupPayload = { ...signUpData };
+
+  if (isPhone(signUpData.phone) && !signUpData.phone.startsWith("+91")) {
+    signupPayload.phone = "+91" + signUpData.phone;
+  }
+
+  // userType coming from radio -> "Customer" or "Business"
+  signupPayload.userType = userType === "Customer" ? "Customer" : signupPayload.userType;
+
   try {
+    // 🔐 Encrypt full signup payload
+    const plaintext = JSON.stringify({
+      firstName: signupPayload.firstName,
+      lastName: signupPayload.lastName,
+      signupPassword: signupPayload.signupPassword,
+      phone: signupPayload.phone,
+      email: signupPayload.email,
+      userType: signupPayload.userType,
+    });
+
+    const encrypted = await encryptWithPublicKey(publicKey, plaintext);
 
     const response = await fetch(`${baseURL}/api/signup`, {
-
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...signupPayload}),
+      body: JSON.stringify({ encrypted }),          // 👈 only encrypted payload
     });
 
     const data = await response.json();
 
     if (data.success) {
       alert("Signup successful!");
-      setIsOpen(false); // Go back to login
+      setIsOpen(false);  // Go back to login view
     } else {
       alert(data.message || "Signup failed.");
     }
@@ -176,6 +291,7 @@ useEffect(() => {
     alert("Something went wrong during signup.");
   }
 };
+
 
 
   const toggleDoor = () => {

@@ -25,7 +25,7 @@ export const CartProvider = ({ children }) => {
 
   useEffect(() => {
     fetchCart();
-  }, [user,cartItems]);
+  }, [user]);
 
   const addItem = (item) => {
     console.log(item)

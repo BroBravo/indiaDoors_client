@@ -26,7 +26,7 @@ const FlipDoor = ({ frontWrap, backWrap, frontCarving, backCarving, widthInInche
             className={`${styles.doorFace} ${styles.front}`}
             style={{ width: lamWidth, height: lamHeight }}
           />
-          {frontCarving && <img src={frontCarving} alt="Carving Pattern" className={`${styles.doorFace} ${styles.front} ${styles.carvingOverlay}`} />}
+          {frontCarving && <img src={frontCarving?`${baseURL}/${frontCarving}`:''} alt="Carving Pattern" className={`${styles.doorFace} ${styles.front} ${styles.carvingOverlay}`} />}
 
           {/* Back Image */}
           <img
@@ -35,7 +35,7 @@ const FlipDoor = ({ frontWrap, backWrap, frontCarving, backCarving, widthInInche
             className={`${styles.doorFace} ${styles.back}`}
             style={{ width: lamWidth, height: lamHeight }}
           />
-          {backCarving && <img src={backCarving} alt="Carving Pattern" className={`${styles.doorFace} ${styles.back} ${styles.carvingOverlay}`} />}
+          {backCarving && <img src={backCarving?`${baseURL}/${backCarving}`:''} alt="Carving Pattern" className={`${styles.doorFace} ${styles.back} ${styles.carvingOverlay}`} />}
         </motion.div>
       </div>
       <div className={styles.buttonGroup}>

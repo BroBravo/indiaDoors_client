@@ -13,7 +13,7 @@ const CartPage = () => {
   const {user,loading}=useUser();
   const navigate=useNavigate();
   const baseWoodPrice=70;
-  
+  const baseURL = process.env.REACT_APP_BASE_URL;
  const total = cartItems.reduce((sum, item) => {
      const quantity = Number(item.quantity) || 0;
      const doorTotal = Number(item.item_amount);
@@ -47,7 +47,7 @@ useEffect(() => {
               <div className={styles.cardContent}>
                 <div className={styles.itemImage}>
                    <img
-                    src={item.front_wrap_image}
+                    src={`${baseURL}/${item.front_wrap_image}`}
                     alt="Front of door"
                   />
                 </div>

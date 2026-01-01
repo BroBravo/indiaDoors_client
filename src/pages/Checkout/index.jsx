@@ -93,7 +93,8 @@ const CheckoutPage = () => {
       // Build payload with chosen address (no need to send shipping_errors to backend)
       const checkoutPayload = {
         cartItems,
-        totalAmount: grandTotal,
+        totalAmount: Number(grandTotal.toFixed(2)),
+        shipping_fee: Number(shippingFee.toFixed(2)),
         shipping_selection: shipChoice.selection,
         shipping_address_id: shipChoice.shipping_address_id,
         shipping_address: shipChoice.shipping_address,

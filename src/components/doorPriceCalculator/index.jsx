@@ -30,7 +30,7 @@ const DoorPriceCalculator = ({ frontWrap, backWrap, frontCarving, backCarving, b
 
   return (
     <div className={styles.calculator}>
-      <h2 style={{color:"rgba(84, 43, 5, 0.919)"}}>Door Pricing</h2>
+      <h2 style={{color:"rgba(1, 55, 94)"}}>Door Pricing</h2>
       <div className={styles.counter}>
         <label>Number of doors: </label>
         <button onClick={decrement} className={styles.customButton}>-</button>  

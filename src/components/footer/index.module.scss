@@ -8,16 +8,12 @@
   margin-top: auto;
   position: relative;
 }
-body{
-    
-    min-height: 100vh;
-}
-// .App{
 
-//   min-height: 100vh;
-//   display:flex;
-//   flex-direction: column;
-// }
+/* Keep page full height so footer can sit at bottom when content is short */
+body {
+  min-height: 100vh;
+}
+
 .footerContainer {
   display: flex;
   flex-direction: column;
@@ -28,40 +24,50 @@ body{
 .socialLinks {
   display: flex;
   gap: 2vw;
+  align-items: center;
 }
 
 .socialIcon {
-  font-size: 2.5rem; /* Adjust size as needed */
-  color: white; /* Ensure icons remain visible */
-  transition: transform 0.3s, color 0.3s;
+  font-size: 2.5rem;
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  /* helps animation smoothness */
+  will-change: transform, opacity;
+
+  transition: transform 0.25s, color 0.25s;
 
   &:hover {
-    transform: scale(1.2);
-    color: rgb(218, 184, 70); /* Change color on hover */
+    color: rgb(218, 184, 70);
   }
-}
-
-.socialIcon:hover {
-  transform: scale(1.1);
 }
 
 .footerLinks {
   display: flex;
   gap: 2vw;
   margin: 1vh 0;
+  align-items: center;
+
+  /* helps animation smoothness */
+  will-change: transform, opacity;
 }
 
 .footerLink {
   color: white;
   text-decoration: none;
   font-size: 1.2rem;
-}
 
-.footerLink:hover {
-  text-decoration: underline;
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 .copyright {
   font-size: 1rem;
   opacity: 0.8;
+
+  /* helps animation smoothness */
+  will-change: transform, opacity;
 }

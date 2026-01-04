@@ -49,9 +49,9 @@
 .flipButton {
   padding: 0.5rem 0.9rem;
   border-radius: 8px;
-  border: 1px solid rgba(84, 43, 5, 0.918);   
+  border: 1px solid rgba(1, 55, 94);   
   background: #ffffff;
-  color: rgba(84, 43, 5, 0.918);
+  color: rgba(1, 55, 94);
   font-weight: 500;
   cursor: pointer;
   transition: background-color .2s ease, color .2s ease, box-shadow .2s ease;
@@ -60,11 +60,11 @@
 }
 
 .active {
-  background: rgba(84, 43, 5, 0.918);  /* active = darker */
+  background: rgba(1, 55, 94);  /* active = darker */
   color: #ffffff;
   box-shadow: 0 2px 8px rgba(59,130,246,.35);
 
-  &:hover { background: rgba(153, 82, 16, 0.918); } 
+  &:hover { background: rgba(79, 130, 241); } 
 }
 
 

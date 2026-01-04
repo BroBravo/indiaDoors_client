@@ -6,20 +6,17 @@ import { Helmet } from "react-helmet";
 function Home() {
   return (
     <>
-      <Helmet><title>Home | India Doors</title></Helmet>
+      <Helmet>
+        <title>Home | India Doors</title>
+      </Helmet>
 
       <div className={styles.page}>
-       <section className={`${styles.heroRow} ${styles.fullBleed}`}>
-        <div className={styles.sliderCol}>
+        {/* ONLY SLIDER */}
+        <section className={styles.heroRow}>
+          <div className={styles.sliderCol}>
             <Slider />
-        </div>
-
-        <aside className={styles.sideCol}>
-            <div className={styles.sideBox} />
-            <div className={styles.sideBox} />
-        </aside>
-       </section>
-
+          </div>
+        </section>
 
         <Products />
       </div>
@@ -28,3 +25,4 @@ function Home() {
 }
 
 export default Home;
+

@@ -1,209 +1,4 @@
-// import { useState, useEffect } from "react";
-// import axios from "axios";
-// import styles from "./index.module.scss"; 
-// import { Link, useNavigate, useLocation } from "react-router-dom";
-// import { FaShoppingCart,FaTimes,FaBars, FaUserCircle, FaPowerOff} from "react-icons/fa";
-// import { useUser } from "../../context/userContext";
-// import { MenuIcon, MenuSquare, ListCollapse, List} from 'lucide-react';
-// const menuItems = [
-//   {
-//     label: "Home",
-//     to: "/",
-//   },
-//   {
-//     label: "About Us",
-//     to: "/about-us#about",
-//   },
-//   {
-//     label: "Contact Us",
-//     to: "/about-us#contact",
-//   },
-//   {
-//     label: "Custom Door",
-//     to: "/custom-door",
-//   },
-// ];
-
-// function Navbar() {
-//   const navigate=useNavigate();
-//   const location=useLocation();
-//   const { user, setUser } = useUser(); 
-//   const [menuOpen, setMenuOpen] = useState(false);
-//   const baseURL = process.env.REACT_APP_BASE_URL;
-//  const handleLogout = async () => {
-//   try {
-
-//     await axios.post(`${baseURL}/api/logout`,{},{ withCredentials: true }); // hit the backend to clear cookie
-
-//     setUser(null);
-//     navigate("/home");
-//   } catch (error) {
-//     console.error("Logout failed", error);
-//   }
-// };
-// //   const fetchUserInfo = async () => {
-// //   const token = localStorage.getItem("token");
-// //   if (!token) return; // No token, user is not logged in
-
-// //   try {
-
-// //     const response = await axios.get(`${baseURL}/auth", {
-  
-// //       headers: { Authorization: `Bearer ${token}` }, // Send token in request
-// //     });
-
-// //     setLoggedInUsername(response.data.username); // Set username from response
-// //    // window.location.reload();
-
-// //     // if (location.pathname !== "/home") {
-// //     //     navigate("/home");
-// //     //     //window.location.reload();
-
-// //     //   }
-// //   } catch (err) {
-// //     console.error("Token expired or invalid", err);
-// //     localStorage.removeItem("token"); // Remove expired token
-// //     setLoggedInUsername(null); // Reset to default
-// //   }
-// // };
-
-// //   // Call fetchUserInfo on component mount
-// //   useEffect(() => {
-// //     fetchUserInfo();
-// //   }, []);
-//    const toggleMenu = () => {
-//     setMenuOpen((prev) => !prev);
-//   };
-//   return (
-//     // <nav className={styles.navbar}>
-//     //   {menuItems.map((item, key) => (
-//     //     <div key={key} className={styles.navbarItems}>
-//     //       <Link to={item.to} className={styles.navbarItemsLink}>
-//     //         {item.label}
-//     //       </Link>
-//     //     </div>
-//     //   ))}
-      
-//     //   {user && <Link to="/cart" className={styles.cartIconContainer}>
-//     //     <FaShoppingCart className={styles.cartIcon} />
-//     //    </Link>
-//     //    } 
-//     //    <div className={styles.loginInfo}>
-//     //     {user ? (
-//     //       // ✅ Show username & logout button if logged in
-//     //       <>
-//     //         <Link onMouseEnter={() => setIsDropdownOpen(true)}
-//     //               onMouseLeave={() => setIsDropdownOpen(false)} 
-//     //                className={`${styles.navbarItemsLink} ${styles.loginInfoUsername} `}>
-//     //             {user.username}
-//     //         </Link>
-//     //         <div className={styles.loginImageContainer}>
-//     //           <img src="/defaultuser.webp" className={styles.loginInfoImage} alt="User" />
-//     //         </div>
-//     //         { isDropdownOpen && (<div onMouseEnter={() => setIsDropdownOpen(true)}
-//     //               onMouseLeave={() => setIsDropdownOpen(false)}  className={styles.dropDownContainer}>
-//     //             <div className={styles.dropDownContainerItem}>
-//     //               <Link to="/profile" className={styles.profileLink}>
-//     //               View Profile
-//     //               </Link>
-//     //             </div >
-//     //             <div className={styles.dropDownContainerItem}>
-//     //               <button className={styles.logoutButton} onClick={handleLogout}>Logout</button>
-//     //             </div>
-                
-//     //         </div>)}
-//     //       </>
-//     //     ) : (
-          
-//     //       <>
-//     //           <Link to="/login" className={`${styles.navbarItemsLink} ${styles.loginInfoUsername} `}>
-//     //             Login/Sign up
-//     //           </Link>
-//     //         <div className={styles.loginImageContainer}>
-//     //             <img src="/defaultuser.webp" className={styles.loginInfoImage} alt="User" />
-//     //           </div>
-//     //       </>
-//     //     )}
-//     //   </div>
-//     // </nav>
-//      <nav className={styles.navbar}>
-
-//        {/* Logo */}
-//         <div className={styles.logoContainer}>
-//           <Link to="/">
-//             <img src="/IndiaDoors_logo2.png" alt="Company Logo" className={styles.logoImage} />
-//           </Link>
-//         </div>
-
-//       <div className={styles.mobileMenuIcon} onClick={toggleMenu}>
-//         {/* {menuOpen ? <FaTimes /> : <FaBars />} */}
-//         {menuOpen ? <MenuIcon /> : <MenuIcon />}
-//       </div>
-
-//       <div className={`${styles.menuItems} ${menuOpen ? styles.open : ""}`}>
-//         {menuItems.map((item, key) => (
-//           <Link to={item.to} className={styles.navbarItemsLink} onClick={() => setMenuOpen(false)}>
-//               <div key={key} className={styles.navbarItems}>
-//                   {item.label}
-//               </div>
-//           </Link>
-          
-//         ))}
-//       </div>
-
-//       {user && (
-//         <Link to="/cart" className={styles.cartIconContainer}>
-//           <FaShoppingCart className={styles.cartIcon} />
-          
-//         </Link>
-//       )}
-
-//       <div className={styles.loginInfo}>
-//         {user ? (
-//           <div  className={styles.dropdownWrapper}>
-//             <div className={`${styles.navbarItemsLink} ${styles.loginInfoUsername}`} >
-//               {user.username}
-//             </div>
-//             <div className={styles.loginImageContainer}>
-//               {/* <img src="/defaultuser.webp" className={styles.loginInfoImage} alt="User" /> */}
-//               <FaUserCircle style={{ fontSize: '2vw', color: '#654321' }}/>
-//             </div>
-            
-//               <div className={styles.dropDownContainer}>
-//                 <div className={styles.dropDownContainerItem}>
-//                   <Link to="/profile" className={styles.profileLink}>
-//                     View Profile
-//                   </Link>
-//                   <FaUserCircle style={{color:'rgb(40, 116, 240)', marginLeft: '8px' }}/>
-//                 </div>
-//                 <div className={styles.dropDownContainerItem}>
-//                   <div className={styles.profileLink} onClick={handleLogout}>
-//                     Logout  
-//                   </div>
-//                   <FaPowerOff style={{color:'red', marginLeft: '8px' }}/>
-//                 </div>
-//               </div>
-            
-//           </div>
-//         ) : (
-//           <>
-//             <Link to="/login" className={`${styles.navbarItemsLink} ${styles.loginInfoUsername}`}>
-//               Login/Sign up
-//             </Link>
-//             <div className={styles.loginImageContainer}>
-//               {/* <img src="/defaultuser.webp" className={styles.loginInfoImage} alt="User" /> */}
-//               <FaUserCircle style={{ fontSize: '2vw', color: '#654321' }}/>
-//             </div>
-//           </>
-//         )}
-//       </div>
-//     </nav>
-//   );
-// }
-
-// export default Navbar;
-
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import axios from "axios";
 import styles from "./index.module.scss";
 import { Link, useNavigate, useLocation } from "react-router-dom";
@@ -219,23 +14,17 @@ const menuItems = [
 ];
 
 function normalizePath(p = "") {
-  // remove hash/query for active detection
   return String(p).split("#")[0].split("?")[0];
 }
 
 function getActiveIndex(pathname) {
   const p = normalizePath(pathname);
 
-  // choose "best match"
-  // "/" should not hijack others
   if (p.startsWith("/custom-door")) return 3;
-  if (p.startsWith("/about-us")) return 1; // About + Contact both belong to about-us, we’ll refine below
-
-  // If you want Contact to be active when URL contains #contact:
-  // We’ll handle this using location.hash below in the component.
-
+  if (p.startsWith("/about-us")) return 1;
   if (p === "/") return 0;
-  return 0;
+
+  return -1; // unknown pages (cart/profile/login etc.)
 }
 
 export default function Navbar() {
@@ -244,13 +33,17 @@ export default function Navbar() {
   const { user, setUser } = useUser();
 
   const [menuOpen, setMenuOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
   const baseURL = process.env.REACT_APP_BASE_URL;
 
   const handleLogout = async () => {
     try {
       await axios.post(`${baseURL}/api/logout`, {}, { withCredentials: true });
       setUser(null);
-      navigate("/home");
+      setProfileOpen(false);
+      navigate("/");
     } catch (error) {
       console.error("Logout failed", error);
     }
@@ -258,22 +51,52 @@ export default function Navbar() {
 
   const toggleMenu = () => setMenuOpen((prev) => !prev);
 
+  // Close menus on route change
+  useEffect(() => {
+    setMenuOpen(false);
+    setProfileOpen(false);
+  }, [location.pathname, location.hash]);
+
+  // Close profile dropdown on outside click + ESC
+  useEffect(() => {
+    if (!profileOpen) return;
+
+    const onMouseDown = (e) => {
+      if (!dropdownRef.current) return;
+      if (!dropdownRef.current.contains(e.target)) setProfileOpen(false);
+    };
+
+    const onKeyDown = (e) => {
+      if (e.key === "Escape") setProfileOpen(false);
+    };
+
+    document.addEventListener("mousedown", onMouseDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", onMouseDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [profileOpen]);
+
+  const isCartActive = useMemo(() => {
+    return normalizePath(location.pathname).startsWith("/cart");
+  }, [location.pathname]);
+
   const activeIndex = useMemo(() => {
+    if (isCartActive) return -1;
+
     const baseIndex = getActiveIndex(location.pathname);
 
-    // If we are on /about-us and hash is #contact, highlight Contact Us (index 2)
     if (normalizePath(location.pathname).startsWith("/about-us")) {
-      if (String(location.hash || "").toLowerCase() === "#contact") return 2;
-      if (String(location.hash || "").toLowerCase() === "#about") return 1;
-      // default to About Us if /about-us without hash
+      const h = String(location.hash || "").toLowerCase();
+      if (h === "#contact") return 2;
       return 1;
     }
 
     return baseIndex;
-  }, [location.pathname, location.hash]);
+  }, [location.pathname, location.hash, isCartActive]);
 
   const pillStyle = useMemo(() => {
-    // 4 items => 25% each
     const w = 100 / menuItems.length;
     return {
       width: `${w}%`,
@@ -281,12 +104,18 @@ export default function Navbar() {
     };
   }, [activeIndex]);
 
+  const showPillIndicator = activeIndex >= 0;
+
   return (
     <nav className={styles.navbar}>
       {/* Logo */}
       <div className={styles.logoContainer}>
         <Link to="/">
-          <img src="/IndiaDoors_logo2.png" alt="Company Logo" className={styles.logoImage} />
+          <img
+            src="/IndiaDoors_logo2.png"
+            alt="Company Logo"
+            className={styles.logoImage}
+          />
         </Link>
       </div>
 
@@ -297,20 +126,24 @@ export default function Navbar() {
 
       {/* Desktop pill menu */}
       <div className={styles.pillMenu} aria-label="Main navigation">
-        <span className={styles.pillIndicator} style={pillStyle} />
+        {showPillIndicator && (
+          <span className={styles.pillIndicator} style={pillStyle} />
+        )}
 
         {menuItems.map((item, idx) => (
           <Link
             key={item.to}
             to={item.to}
-            className={`${styles.pillLink} ${idx === activeIndex ? styles.pillLinkActive : ""}`}
+            className={`${styles.pillLink} ${
+              idx === activeIndex ? styles.pillLinkActive : ""
+            }`}
           >
             {item.label}
           </Link>
         ))}
       </div>
 
-      {/* Mobile drawer menu (kept simple, no pill needed) */}
+      {/* Mobile drawer menu */}
       <div className={`${styles.menuItemsMobile} ${menuOpen ? styles.open : ""}`}>
         {menuItems.map((item) => (
           <Link
@@ -326,34 +159,89 @@ export default function Navbar() {
 
       {/* Cart */}
       {user && (
-        <Link to="/cart" className={styles.cartIconContainer}>
-          <FaShoppingCart className={styles.cartIcon} />
+        <Link
+          to="/cart"
+          className={`${styles.cartIconContainer} ${
+            isCartActive ? styles.cartActive : ""
+          }`}
+          aria-label="Cart"
+          title="Cart"
+        >
+          <FaShoppingCart
+            className={`${styles.cartIcon} ${
+              isCartActive ? styles.cartIconActive : ""
+            }`}
+          />
         </Link>
       )}
 
-      {/* Profile dropdown */}
+      {/* Profile dropdown (CLICK) */}
       <div className={styles.loginInfo}>
         {user ? (
-          <div className={styles.dropdownWrapper}>
-            <div className={styles.loginInfoUsername}>{user.username}</div>
-            <div className={styles.loginImageContainer}>
-              <FaUserCircle className={styles.userIcon} />
-            </div>
+          <div className={styles.dropdownWrapper} ref={dropdownRef}>
+            {/* Trigger */}
+            <button
+              type="button"
+              className={`${styles.profileTrigger} ${
+                profileOpen ? styles.profileTriggerActive : ""
+              }`}
+              onClick={() => setProfileOpen((v) => !v)}
+              aria-haspopup="menu"
+              aria-expanded={profileOpen}
+            >
+              <span className={styles.loginInfoUsername}>{user.username}</span>
+              <span className={styles.loginImageContainer}>
+                <FaUserCircle className={styles.userIcon} />
+              </span>
+            </button>
 
-            <div className={styles.dropDownContainer}>
-              <div className={styles.dropDownContainerItem}>
-                <Link to="/profile" className={styles.profileLink}>
-                  View Profile
-                </Link>
-                <FaUserCircle style={{ color: "rgb(40, 116, 240)", marginLeft: 8 }} />
-              </div>
-
-              <div className={styles.dropDownContainerItem}>
-                <div className={styles.profileLink} onClick={handleLogout}>
-                  Logout
+            {/* Dropdown */}
+            <div
+              className={`${styles.dropDownContainer} ${
+                profileOpen ? styles.dropDownOpen : ""
+              }`}
+              role="menu"
+              aria-label="Profile menu"
+            >
+              <div className={styles.dropDownHeader}>
+                <div className={styles.dropDownAvatar}>
+                  <FaUserCircle />
                 </div>
-                <FaPowerOff style={{ color: "red", marginLeft: 8 }} />
+                <div className={styles.dropDownHeaderText}>
+                  <div className={styles.dropDownName}>{user.username}</div>
+                  <div className={styles.dropDownSub}>Account</div>
+                </div>
               </div>
+
+              <div className={styles.dropDownDivider} />
+
+              {/* View Profile (same row style as logout) */}
+              <Link
+                to="/profile"
+                className={styles.dropDownItem}
+                role="menuitem"
+                onClick={() => setProfileOpen(false)}
+              >
+                <span className={styles.dropDownItemLeft}>
+                  <FaUserCircle className={styles.ddIconBlue} />
+                  <span>View Profile</span>
+                </span>
+                <span className={styles.dropDownChevron}>›</span>
+              </Link>
+
+              {/* Logout (same row style, just danger hover) */}
+              <button
+                type="button"
+                className={`${styles.dropDownItem} ${styles.dropDownDanger}`}
+                onClick={handleLogout}
+                role="menuitem"
+              >
+                <span className={styles.dropDownItemLeft}>
+                  <FaPowerOff className={styles.ddIconRed} />
+                  <span>Logout</span>
+                </span>
+                <span className={styles.dropDownChevron}>›</span>
+              </button>
             </div>
           </div>
         ) : (

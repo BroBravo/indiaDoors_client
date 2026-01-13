@@ -1,78 +1,119 @@
-.sliderContainer {
-    display: flex;
-    position: relative;
-    align-items: center;
-    // margin-top: 10px;
-    // margin-bottom: 10px;
-    justify-content: space-between;
-    width: 100%;
-    height: 70vh;
-    box-sizing: border-box;
-    background-color: rgb(227, 227, 215);
-    z-index: 0;
-    // border-top: 3px solid rgb(55, 84, 6);
-    // border-bottom: 3px solid rgb(55, 84, 6);
-    overflow: hidden; 
+.wrapper {
+  width: 100%;
+  
 }
 
-.slider {
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: column;
-    height: 100%;    
-    transition: transform 0.5s ease-in-out;    
+/* Hero slider container */
+.sliderShell {
+  position: relative;
+  width: 100%;
+  height: 80vh;
+  overflow: hidden;
+  background: #111;
 }
 
-.sliderImageContainer {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 0;
+.viewport {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
-.sliderImageContainer img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    z-index: 0;
+/* Sliding row */
+.track {
+  display: flex;
+  height: 100%;
+  transition: transform 650ms ease-in-out;
+  will-change: transform;
 }
 
-.arrow {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    height: 50px;
-    width: 50px;
-    border-radius: 50%;
-    background-color: white;
-    cursor: pointer;
-    z-index: 2;
-    transition: transform 0.3s ease;
+/* Each slide */
+.slide {
+  position: relative;
+  flex: 0 0 100%;
+  height: 100%;
 }
 
-.arrow:hover {
+.slideImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Dark overlay */
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.55),
+    rgba(0, 0, 0, 0.35),
+    rgba(0, 0, 0, 0.55)
+  );
+}
+
+/* Center text like Doors India */
+.centerText {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 0 16px;
+  text-align: center;
+}
+
+.title {
+  color: #fff;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  font-size: clamp(28px, 5vw, 64px);
+  line-height: 1.05;
+  text-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* Dots BELOW slider */
+.dotsBar {
+  width: 100%;
+  padding: 14px 0 18px;
+  display: flex;
+  justify-content: center;
+}
+
+.dots {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Simple circle dots */
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid #000;     /* black border */
+  background: #fff;           /* inactive = white */
+  cursor: pointer;
+  padding: 0;
+  box-shadow: none;           /* no shadow */
+  outline: none;
+  transition: background 180ms ease, transform 180ms ease;
+
+  &:hover {
     transform: scale(1.1);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
 }
 
-.left {
-    left: 2vw;
+/* remove inner glow dot completely */
+.dotInner {
+  display: none;
 }
 
-.right {
-    right: 2vw;
-    transform: rotate(180deg);
+/* Active dot = black fill */
+.dotActive {
+  background: #000;           /* active = black */
 }
-
-.right:hover {
-    transform: scale(1.1) rotate(180deg); /* Combine both scale and rotate */
-}
-
-.fullImage {
-    height: 100%;
-    width: 100%;
-}
-
-

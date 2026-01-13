@@ -1,63 +1,94 @@
-import { useState, useEffect } from 'react';
-import styles from "./index.module.scss"; 
+import { useEffect, useMemo, useState, useCallback } from "react";
+import styles from "./index.module.scss";
 
 function Slider() {
-  // State to track the current slide
+  const images = useMemo(
+    () => [
+      "/slider_pics/Slider-1.jpg",
+      "/slider_pics/Slider-2.png",
+      "/slider_pics/door1.webp",
+      "/slider_pics/door2.webp",
+    ],
+    []
+  );
+
+  // Optional per-slide heading
+  const headings = useMemo(
+    () => [
+      "Choose from an extensive range of laminates",
+      "Carved with perfection",
+      "Designer Doors",
+      "Premium Finishes",
+    ],
+    []
+  );
+
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // Array of images
-  const images = [
-    "/slider_pics/plywood.jpg",
-    "/slider_pics/plywood2.avif",
-    "/slider_pics/door1.webp",
-    "/slider_pics/door2.webp"
-  ];
+  const goTo = useCallback(
+    (idx) => {
+      const safe = ((idx % images.length) + images.length) % images.length;
+      setCurrentIndex(safe);
+    },
+    [images.length]
+  );
 
-  // Function to handle right arrow click
-  const handleNext = () => {
-    setCurrentIndex((prevIndex) => 
-      prevIndex === images.length - 1 ? 0 : prevIndex + 1
-    );
-  };
+  const next = useCallback(() => {
+    setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+  }, [images.length]);
 
-  // Function to handle left arrow click
-  const handlePrev = () => {
-    setCurrentIndex((prevIndex) => 
-      prevIndex === 0 ? images.length - 1 : prevIndex - 1
-    );
-  };
-  
-    useEffect(() => {
-    const interval = setInterval(() => {
-      handleNext();
-    }, 3000);
-
-    return () => clearInterval(interval); // ✅ Clear on unmount
-  }, []);
+  // ✅ Always slide (no pause on hover)
+  useEffect(() => {
+    const interval = setInterval(next, 3500);
+    return () => clearInterval(interval);
+  }, [next]);
 
   return (
-    <div className={styles.sliderContainer}>
-      <div className={`${styles.arrow} ${styles.left}`} onClick={handlePrev}>
-        <img className={styles.fullImage} src="slider_pics/arrowIcon.png" alt="Previous" />
-      </div>
-
-      <div 
-        className={styles.slider} 
-        style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-      >
-        {images.map((image, index) => (
-          <div className={styles.sliderImageContainer} key={index}>
-            <img src={image} alt={`Slide ${index + 1}`} />
+    <section className={styles.wrapper}>
+      <div className={styles.sliderShell}>
+        <div className={styles.viewport}>
+          <div
+            className={styles.track}
+            style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+          >
+            {images.map((src, idx) => (
+              <div className={styles.slide} key={idx}>
+                <img className={styles.slideImg} src={src} alt={`Slide ${idx + 1}`} />
+                <div className={styles.overlay} />
+                <div className={styles.centerText}>
+                  <h1 className={styles.title}>
+                    {headings[idx] || "Sliders & Partitions"}
+                  </h1>
+                </div>
+              </div>
+            ))}
           </div>
-        ))}
+        </div>
       </div>
 
-      <div className={`${styles.arrow} ${styles.right}`} onClick={handleNext}>
-        <img className={styles.fullImage} src="slider_pics/arrowIcon.png" alt="Next" />
+      {/* ✅ premium dots BELOW slider */}
+      <div className={styles.dotsBar}>
+        <div className={styles.dots}>
+          {images.map((_, idx) => {
+            const active = idx === currentIndex;
+            return (
+              <button
+                key={idx}
+                type="button"
+                className={`${styles.dot} ${active ? styles.dotActive : ""}`}
+                onClick={() => goTo(idx)}
+                aria-label={`Go to slide ${idx + 1}`}
+                aria-current={active ? "true" : "false"}
+              >
+                {/* inner glow dot */}
+                <span className={styles.dotInner} />
+              </button>
+            );
+          })}
+        </div>
       </div>
-    </div>
+    </section>
   );
 }
 
 export default Slider;
-

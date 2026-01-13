@@ -16,6 +16,14 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
+
+  touch-action: pan-y;     /* allow vertical scroll, enable horizontal swipe */
+  user-select: none;
+  cursor: grab;
+}
+
+.viewport:active {
+  cursor: grabbing;
 }
 
 /* Sliding row */

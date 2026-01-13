@@ -25,10 +25,19 @@
 /* Mobile menu icon */
 .mobileMenuIcon {
   display: none;
-  font-size: 5vmax;
   cursor: pointer;
   margin-left: 10px;
   color: rgba(1, 55, 94);
+  background: transparent;
+  border: 0;
+  padding: 8px;
+  border-radius: 10px;
+
+  @media (max-width: 840px) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 /* Pill menu */
@@ -87,39 +96,6 @@
   color: rgb(218, 184, 70);
 }
 
-/* Mobile drawer */
-.menuItemsMobile {
-  display: none;
-
-  @media (max-width: 840px) {
-    display: none;
-    width: 100%;
-    flex-direction: column;
-    background-color: white;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    z-index: 10;
-    border-top: 1px solid #ccc;
-  }
-}
-
-.menuItemsMobile.open {
-  @media (max-width: 840px) {
-    display: flex;
-    width: 60vw;
-    height: 100vh;
-  }
-}
-
-.mobileLink {
-  padding: 1rem;
-  font-size: 1.1rem;
-  border-bottom: 2px solid rgb(176, 169, 169);
-  text-decoration: none;
-  color: rgba(1, 55, 94);
-}
-
 /* Cart */
 .cartIconContainer {
   padding: 0 1rem;
@@ -133,6 +109,11 @@
   border-radius: 9999px;
 
   transition: transform 0.2s, background-color 0.2s, border-color 0.2s;
+
+  /* ✅ Hide desktop cart icon on mobile (cart will be in drawer) */
+  @media (max-width: 840px) {
+    display: none;
+  }
 }
 
 .cartIcon {
@@ -185,7 +166,6 @@
   }
 }
 
-/* When menu open, keep trigger visually active */
 .profileTriggerActive {
   background: rgba(1, 55, 94, 0.08);
   box-shadow: 0 0 0 2px rgba(1, 55, 94, 0.10) inset;
@@ -244,7 +224,6 @@
   box-sizing: border-box;
 }
 
-/* ✅ Triangle tooltip arrow */
 .dropDownContainer::after {
   content: "";
   position: absolute;
@@ -259,7 +238,6 @@
   box-shadow: -4px -4px 10px rgba(17, 24, 39, 0.06);
 }
 
-/* Open state */
 .dropDownOpen {
   opacity: 1;
   transform: translateY(0);
@@ -267,7 +245,6 @@
   z-index: 100;
 }
 
-/* Header */
 .dropDownHeader {
   display: flex;
   align-items: center;
@@ -311,7 +288,6 @@
   margin: 8px 8px;
 }
 
-/* ✅ Items: both Link and button look identical */
 .dropDownItem {
   width: 100%;
   box-sizing: border-box;
@@ -332,8 +308,6 @@
   cursor: pointer;
 
   transition: background-color 0.15s ease, transform 0.12s ease;
-
-  /* Prevent any weird overflow */
   overflow: hidden;
 }
 
@@ -356,7 +330,6 @@
   font-size: 18px;
 }
 
-/* Icons */
 .ddIconBlue {
   color: rgba(1, 55, 94);
 }
@@ -365,14 +338,113 @@
   color: #e11d48;
 }
 
-/* Danger hover (logout) */
 .dropDownDanger:hover {
   background: rgba(225, 29, 72, 0.10);
 }
 
-/* Responsive */
-@media (max-width: 840px) {
-  .mobileMenuIcon {
-    display: flex;
+/* =========================================================
+   ✅ MOBILE DRAWER (SLIDE ANIMATION) + BACKDROP + CART BOTTOM
+   ========================================================= */
+
+/* Backdrop overlay */
+.mobileBackdrop {
+  display: none;
+
+  @media (max-width: 840px) {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 220ms ease;
+    z-index: 20;
   }
+}
+
+.mobileBackdropOpen {
+  @media (max-width: 840px) {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+/* Drawer */
+.menuItemsMobile {
+  display: none;
+
+  @media (max-width: 840px) {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    width: min(78vw, 320px);
+    height: 100vh;
+
+    background: #fff;
+    border-right: 1px solid rgba(0, 0, 0, 0.08);
+
+    /* Start hidden off-screen to the left */
+    transform: translateX(-105%);
+    transition: transform 260ms ease;
+
+    z-index: 30;
+    box-shadow: 12px 0 30px rgba(0, 0, 0, 0.18);
+
+    /* keep under navbar area visible */
+    padding-top: 78px;
+  }
+}
+
+/* Open: slide in from left -> right */
+.open {
+  @media (max-width: 840px) {
+    transform: translateX(0);
+  }
+}
+
+/* Inner layout so cart can stick to bottom */
+.mobileMenuInner {
+  height: calc(100vh - 78px);
+  display: flex;
+  flex-direction: column;
+  padding: 10px 0;
+}
+
+/* Mobile links */
+.mobileLink {
+  padding: 16px 18px;
+  font-size: 16px;
+  font-weight: 700;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.10);
+  text-decoration: none;
+  color: rgba(1, 55, 94);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Row left (icon + text) */
+.mobileRowLeft {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mobileChevron {
+  color: rgba(0, 0, 0, 0.45);
+  font-size: 18px;
+}
+
+/* Cart at bottom */
+.mobileCartLink {
+  margin-top: auto; /* ✅ pushes cart to last/bottom */
+  border-top: 1px solid rgba(0, 0, 0, 0.10);
+  border-bottom: 0;
+}
+
+.mobileCartIcon {
+  font-size: 18px;
+  color: rgba(1, 55, 94);
 }

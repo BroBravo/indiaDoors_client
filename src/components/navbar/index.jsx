@@ -24,7 +24,7 @@ function getActiveIndex(pathname) {
   if (p.startsWith("/about-us")) return 1;
   if (p === "/") return 0;
 
-  return -1; // unknown pages (cart/profile/login etc.)
+  return -1;
 }
 
 export default function Navbar() {
@@ -43,6 +43,7 @@ export default function Navbar() {
       await axios.post(`${baseURL}/api/logout`, {}, { withCredentials: true });
       setUser(null);
       setProfileOpen(false);
+      setMenuOpen(false);
       navigate("/");
     } catch (error) {
       console.error("Logout failed", error);
@@ -77,6 +78,16 @@ export default function Navbar() {
       document.removeEventListener("keydown", onKeyDown);
     };
   }, [profileOpen]);
+
+  // Close mobile drawer on ESC
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKeyDown = (e) => {
+      if (e.key === "Escape") setMenuOpen(false);
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [menuOpen]);
 
   const isCartActive = useMemo(() => {
     return normalizePath(location.pathname).startsWith("/cart");
@@ -120,9 +131,15 @@ export default function Navbar() {
       </div>
 
       {/* Mobile Menu Icon */}
-      <div className={styles.mobileMenuIcon} onClick={toggleMenu}>
+      <button
+        type="button"
+        className={styles.mobileMenuIcon}
+        onClick={toggleMenu}
+        aria-label={menuOpen ? "Close menu" : "Open menu"}
+        aria-expanded={menuOpen}
+      >
         <MenuIcon />
-      </div>
+      </button>
 
       {/* Desktop pill menu */}
       <div className={styles.pillMenu} aria-label="Main navigation">
@@ -143,21 +160,7 @@ export default function Navbar() {
         ))}
       </div>
 
-      {/* Mobile drawer menu */}
-      <div className={`${styles.menuItemsMobile} ${menuOpen ? styles.open : ""}`}>
-        {menuItems.map((item) => (
-          <Link
-            key={item.to}
-            to={item.to}
-            className={styles.mobileLink}
-            onClick={() => setMenuOpen(false)}
-          >
-            {item.label}
-          </Link>
-        ))}
-      </div>
-
-      {/* Cart */}
+      {/* Desktop Cart (hidden on mobile via CSS) */}
       {user && (
         <Link
           to="/cart"
@@ -175,11 +178,10 @@ export default function Navbar() {
         </Link>
       )}
 
-      {/* Profile dropdown (CLICK) */}
+      {/* Profile dropdown */}
       <div className={styles.loginInfo}>
         {user ? (
           <div className={styles.dropdownWrapper} ref={dropdownRef}>
-            {/* Trigger */}
             <button
               type="button"
               className={`${styles.profileTrigger} ${
@@ -195,7 +197,6 @@ export default function Navbar() {
               </span>
             </button>
 
-            {/* Dropdown */}
             <div
               className={`${styles.dropDownContainer} ${
                 profileOpen ? styles.dropDownOpen : ""
@@ -215,7 +216,6 @@ export default function Navbar() {
 
               <div className={styles.dropDownDivider} />
 
-              {/* View Profile (same row style as logout) */}
               <Link
                 to="/profile"
                 className={styles.dropDownItem}
@@ -229,7 +229,6 @@ export default function Navbar() {
                 <span className={styles.dropDownChevron}>›</span>
               </Link>
 
-              {/* Logout (same row style, just danger hover) */}
               <button
                 type="button"
                 className={`${styles.dropDownItem} ${styles.dropDownDanger}`}
@@ -255,6 +254,49 @@ export default function Navbar() {
           </>
         )}
       </div>
+
+      {/* ✅ Mobile Backdrop */}
+      <div
+        className={`${styles.mobileBackdrop} ${
+          menuOpen ? styles.mobileBackdropOpen : ""
+        }`}
+        onClick={() => setMenuOpen(false)}
+        aria-hidden="true"
+      />
+
+      {/* ✅ Mobile Drawer (slides in from left) */}
+      <aside
+        className={`${styles.menuItemsMobile} ${menuOpen ? styles.open : ""}`}
+        aria-label="Mobile navigation"
+      >
+        <div className={styles.mobileMenuInner}>
+          {menuItems.map((item) => (
+            <Link
+              key={item.to}
+              to={item.to}
+              className={styles.mobileLink}
+              onClick={() => setMenuOpen(false)}
+            >
+              {item.label}
+            </Link>
+          ))}
+
+          {/* ✅ Cart at LAST position (bottom) */}
+          {user && (
+            <Link
+              to="/cart"
+              className={`${styles.mobileLink} ${styles.mobileCartLink}`}
+              onClick={() => setMenuOpen(false)}
+            >
+              <span className={styles.mobileRowLeft}>
+                <FaShoppingCart className={styles.mobileCartIcon} />
+                <span>Cart</span>
+              </span>
+              <span className={styles.mobileChevron}>›</span>
+            </Link>
+          )}
+        </div>
+      </aside>
     </nav>
   );
 }

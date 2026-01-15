@@ -13,6 +13,9 @@ $danger: #e11d48;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   flex-wrap: wrap;
   padding: 0 12px;
+
+  /* ✅ allow absolutely centered logo without clipping */
+  overflow: visible;
 }
 
 /* Logo */
@@ -39,9 +42,13 @@ $danger: #e11d48;
 
   @media (max-width: 840px) {
     display: inline-flex;
-    position: absolute;
     align-items: center;
     justify-content: center;
+
+    /* ✅ DO NOT absolute this (it causes layout weirdness) */
+    position: relative;
+    margin-left: 0;
+    z-index: 50;
   }
 }
 
@@ -50,7 +57,6 @@ $danger: #e11d48;
   position: relative;
   display: grid;
 
-  /* ✅ auto equal columns for 4 items (logged-in) or 5 items (logged-out) */
   grid-auto-flow: column;
   grid-auto-columns: 1fr;
 
@@ -119,7 +125,6 @@ $danger: #e11d48;
 
   transition: transform 0.2s, background-color 0.2s, border-color 0.2s;
 
-  /* ✅ Hide desktop cart icon on mobile (cart will be in drawer) */
   @media (max-width: 840px) {
     display: none;
   }
@@ -173,7 +178,6 @@ $danger: #e11d48;
   align-items: center;
   justify-content: center;
 
-  /* Force base size */
   font-size: 30px;
   line-height: 1;
 
@@ -210,7 +214,6 @@ $danger: #e11d48;
     transform: translateY(1px);
   }
 
-  /* ✅ Clamp svg size (react-icons renders svg) */
   svg {
     width: 30px;
     height: 30px;
@@ -234,7 +237,7 @@ $danger: #e11d48;
   color: $brand;
 }
 
-/* Dropdown card (click-open) */
+/* Dropdown */
 .dropDownContainer {
   position: absolute;
   top: calc(100% + 12px);
@@ -379,7 +382,7 @@ $danger: #e11d48;
 }
 
 /* =========================================================
-   ✅ MOBILE DRAWER (SLIDE ANIMATION) + BACKDROP + CART BOTTOM
+   MOBILE DRAWER
    ========================================================= */
 
 .mobileBackdrop {
@@ -477,21 +480,25 @@ $danger: #e11d48;
 }
 
 /* =========================================================
-   ✅ MOBILE: CENTER LOGO IN NAVBAR
+   ✅ MOBILE: CENTER LOGO + STOP PROFILE FROM GETTING CUT
    ========================================================= */
 
 @media (max-width: 840px) {
   .navbar {
-    /* keep left & right controls at edges */
+    /* ✅ one-line navbar, no wrapping */
+    flex-wrap: nowrap;
     justify-content: space-between;
 
-    /* reserve space so the centered logo doesn't overlap icons */
-    //padding-left: 60px;
-    padding-right: 60px;
+    /* keep default padding so right icon stays inside screen */
+    padding: 0 12px;
+
+    /* optional but helps consistency */
+    height: 72px;
   }
 
+  /* ✅ center logo independent of layout */
   .logoContainer {
-    position: relative;
+    position: absolute;
     left: 50%;
     transform: translateX(-50%);
     margin: 0;
@@ -504,13 +511,9 @@ $danger: #e11d48;
     display: block;
   }
 
-  .mobileMenuIcon {
-    margin-left: 0;
-    z-index: 50;
-  }
-
+  /* ✅ remove desktop right margin that was pushing icon off-screen */
   .loginInfo {
-    margin-left: 0;
+    margin-left: auto;
     margin-right: 0;
     z-index: 50;
   }

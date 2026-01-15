@@ -47,7 +47,7 @@ $danger: #e11d48;
 
     /* ✅ DO NOT absolute this (it causes layout weirdness) */
     position: relative;
-    margin-left: 0;
+    margin-left: 10px;
     z-index: 50;
   }
 }
@@ -164,6 +164,7 @@ $danger: #e11d48;
   position: relative;
   display: flex;
   align-items: center;
+  right:10px;
 }
 
 /* Logged-in 3D avatar button */
@@ -490,7 +491,7 @@ $danger: #e11d48;
     justify-content: space-between;
 
     /* keep default padding so right icon stays inside screen */
-    padding: 0 12px;
+    padding: 0 ;
 
     /* optional but helps consistency */
     height: 72px;

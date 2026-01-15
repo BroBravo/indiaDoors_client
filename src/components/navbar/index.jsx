@@ -6,7 +6,7 @@ import { FaShoppingCart, FaUserCircle, FaPowerOff } from "react-icons/fa";
 import { useUser } from "../../context/userContext";
 import { MenuIcon } from "lucide-react";
 
-const menuItems = [
+const baseMenuItems = [
   { label: "Home", to: "/" },
   { label: "About Us", to: "/about-us#about" },
   { label: "Contact Us", to: "/about-us#contact" },
@@ -37,6 +37,11 @@ export default function Navbar() {
   const dropdownRef = useRef(null);
 
   const baseURL = process.env.REACT_APP_BASE_URL;
+
+  const navItems = useMemo(() => {
+    if (user) return baseMenuItems;
+    return [...baseMenuItems, { label: "Login / Sign up", to: "/login" }];
+  }, [user]);
 
   const handleLogout = async () => {
     try {
@@ -96,8 +101,17 @@ export default function Navbar() {
   const activeIndex = useMemo(() => {
     if (isCartActive) return -1;
 
+    // ✅ Highlight Login when logged out and visiting /login or /signup
+    if (!user) {
+      const p = normalizePath(location.pathname);
+      if (p.startsWith("/login") || p.startsWith("/signup")) {
+        return navItems.length - 1; // last item
+      }
+    }
+
     const baseIndex = getActiveIndex(location.pathname);
 
+    // About-us hash routing for Contact tab highlight
     if (normalizePath(location.pathname).startsWith("/about-us")) {
       const h = String(location.hash || "").toLowerCase();
       if (h === "#contact") return 2;
@@ -105,15 +119,15 @@ export default function Navbar() {
     }
 
     return baseIndex;
-  }, [location.pathname, location.hash, isCartActive]);
+  }, [location.pathname, location.hash, isCartActive, user, navItems.length]);
 
   const pillStyle = useMemo(() => {
-    const w = 100 / menuItems.length;
+    const w = 100 / navItems.length;
     return {
       width: `${w}%`,
       transform: `translateX(${activeIndex * 100}%)`,
     };
-  }, [activeIndex]);
+  }, [activeIndex, navItems.length]);
 
   const showPillIndicator = activeIndex >= 0;
 
@@ -123,7 +137,7 @@ export default function Navbar() {
       <div className={styles.logoContainer}>
         <Link to="/">
           <img
-            src="/IndiaDoors_logo2.png"
+            src="/indiaDoors_logo3.png"
             alt="Company Logo"
             className={styles.logoImage}
           />
@@ -147,7 +161,7 @@ export default function Navbar() {
           <span className={styles.pillIndicator} style={pillStyle} />
         )}
 
-        {menuItems.map((item, idx) => (
+        {navItems.map((item, idx) => (
           <Link
             key={item.to}
             to={item.to}
@@ -178,23 +192,22 @@ export default function Navbar() {
         </Link>
       )}
 
-      {/* Profile dropdown */}
+      {/* Profile (logged-in only). Logged-out has login inside pill menu now. */}
       <div className={styles.loginInfo}>
         {user ? (
           <div className={styles.dropdownWrapper} ref={dropdownRef}>
             <button
               type="button"
-              className={`${styles.profileTrigger} ${
-                profileOpen ? styles.profileTriggerActive : ""
+              className={`${styles.profileAvatarBtn} ${
+                profileOpen ? styles.profileAvatarBtnActive : ""
               }`}
               onClick={() => setProfileOpen((v) => !v)}
               aria-haspopup="menu"
               aria-expanded={profileOpen}
+              aria-label="Open profile menu"
+              title="Account"
             >
-              <span className={styles.loginInfoUsername}>{user.username}</span>
-              <span className={styles.loginImageContainer}>
-                <FaUserCircle className={styles.userIcon} />
-              </span>
+              <FaUserCircle className={styles.profileAvatarIcon} />
             </button>
 
             <div
@@ -243,16 +256,7 @@ export default function Navbar() {
               </button>
             </div>
           </div>
-        ) : (
-          <>
-            <Link to="/login" className={styles.loginInfoUsername}>
-              Login/Sign up
-            </Link>
-            <div className={styles.loginImageContainer}>
-              <FaUserCircle className={styles.userIcon} />
-            </div>
-          </>
-        )}
+        ) : null}
       </div>
 
       {/* ✅ Mobile Backdrop */}
@@ -270,7 +274,7 @@ export default function Navbar() {
         aria-label="Mobile navigation"
       >
         <div className={styles.mobileMenuInner}>
-          {menuItems.map((item) => (
+          {baseMenuItems.map((item) => (
             <Link
               key={item.to}
               to={item.to}
@@ -280,6 +284,18 @@ export default function Navbar() {
               {item.label}
             </Link>
           ))}
+
+          {/* ✅ Logged-out: show Login / Sign up inside drawer too */}
+          {!user && (
+            <Link
+              to="/login"
+              className={styles.mobileLink}
+              onClick={() => setMenuOpen(false)}
+            >
+              Login / Sign up
+              <span className={styles.mobileChevron}>›</span>
+            </Link>
+          )}
 
           {/* ✅ Cart at LAST position (bottom) */}
           {user && (
